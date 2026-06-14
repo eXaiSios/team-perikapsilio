@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News — Team Perikapsilio</title>
+<link rel="stylesheet" href="style.css">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="crt-overlay" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<nav class="navbar">
+  <a href="index.html" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
+  <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="index.html" class="nav-link">HOME</a></li>
+    <li><a href="events.html" class="nav-link">EVENTS</a></li>
+    <li><a href="tournaments.html" class="nav-link">TOURNAMENTS</a></li>
+    <li><a href="news.html" class="nav-link active">NEWS</a></li>
+    <li><a href="about.html" class="nav-link">ABOUT</a></li>
+    <li><a href="members.html" class="nav-link">MEMBERS</a></li>
+    <li><a href="contact.html" class="nav-link">CONTACT</a></li>
+  </ul>
+</nav>
+
+<header class="page-hero" data-title="NEWS">
+  <span class="page-hero-tag">◄ TEAM PERIKAPSILIO ►</span>
+  <h1 class="page-hero-title">NEWS</h1>
+  <p class="page-hero-sub vt">Roster updates, tournament results, announcements and stories from the team.</p>
+</header>
+
+<main>
+  <section class="section">
+
+    <div class="filter-bar">
+      <span class="filter-label">CATEGORY:</span>
+      <button class="filter-btn active" data-filter="">ALL</button>
+      <button class="filter-btn" data-filter="ACHIEVEMENT">ACHIEVEMENT</button>
+      <button class="filter-btn" data-filter="TEAM">TEAM</button>
+      <button class="filter-btn" data-filter="EVENT">EVENT</button>
+      <button class="filter-btn" data-filter="ANNOUNCEMENT">ANNOUNCEMENT</button>
+      <input class="search-input" id="news-search" type="text" placeholder="SEARCH NEWS...">
+    </div>
+
+    <!-- Featured article -->
+    <div id="news-featured"></div>
+
+    <!-- Grid -->
+    <div class="news-grid" id="news-grid" style="margin-top:2rem">
+      <div class="card-loading press">LOADING...</div>
+    </div>
+
+    <div class="pagination" id="news-pagination"></div>
+
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="press footer-logo">[PERIKAPSILIO]</span>
+      <p class="vt footer-tagline">Forged in pixels. Built for glory.</p>
+    </div>
+    <nav class="footer-nav" aria-label="Footer navigation">
+      <a href="events.html" class="footer-link vt">EVENTS</a>
+      <a href="tournaments.html" class="footer-link vt">TOURNAMENTS</a>
+      <a href="news.html" class="footer-link vt">NEWS</a>
+      <a href="about.html" class="footer-link vt">ABOUT</a>
+      <a href="members.html" class="footer-link vt">MEMBERS</a>
+      <a href="contact.html" class="footer-link vt">CONTACT</a>
+    </nav>
+    <div class="footer-social">
+      <a href="#" class="social-link" aria-label="Instagram">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="Discord">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057c.002.022.015.043.033.055a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.030zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+      </a>
+      <a href="#" class="social-link" aria-label="TikTok">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
+      </a>
+    </div>
+    <div class="footer-bottom press">© 2025 TEAM PERIKAPSILIO. ALL RIGHTS RESERVED.</div>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+<script src="main.js"></script>
+<script>
+(function() {
+  let currentPage = 1;
+  let currentFilter = '';
+  let searchTerm = '';
+  const PAGE_SIZE = 9;
+  let firstLoad = true;
+
+  async function loadNews() {
+    const grid = document.getElementById('news-grid');
+    const featured = document.getElementById('news-featured');
+    grid.innerHTML = '<div class="card-loading press">LOADING...</div>';
+
+    let filters = '';
+    if (currentFilter) filters = `filters[category][$eq]=${currentFilter}`;
+
+    const data = await API.getNews({ page: currentPage, pageSize: PAGE_SIZE, sort: 'publishedAt:desc', filters });
+    let items = data ? data.data : [];
+
+    if (searchTerm) {
+      const s = searchTerm.toLowerCase();
+      items = items.filter(i => JSON.stringify(i).toLowerCase().includes(s));
+    }
+    if (currentFilter) {
+      items = items.filter(i => (i.attributes.category || '').toUpperCase() === currentFilter);
+    }
+
+    if (!items.length) {
+      grid.innerHTML = PERI.renderEmpty('NO NEWS FOUND');
+      if (featured) featured.innerHTML = '';
+      document.getElementById('news-pagination').innerHTML = '';
+      return;
+    }
+
+    // Feature the first article on first load
+    if (firstLoad && items.length > 0 && featured) {
+      const top = items[0];
+      const a = top.attributes;
+      featured.innerHTML = `
+        <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location='news.html#${a.slug || top.id}'">
+          <span class="card-badge" style="background:var(--accent3);color:#000">★ FEATURED — ${a.category || 'NEWS'}</span>
+          <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${a.title}</h2>
+          <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)}</p>
+          <p class="card-desc vt" style="font-size:1.2rem">${a.summary || ''}</p>
+          <span class="card-link press">READ FULL ARTICLE →</span>
+        </article>`;
+      items = items.slice(1);
+      firstLoad = false;
+    } else if (featured) {
+      featured.innerHTML = '';
+    }
+
+    grid.innerHTML = items.map(PERI.renderNewsCard).join('');
+    PERI.initScrollReveal();
+
+    const meta = data ? data.meta.pagination : { pageCount: 1, page: 1 };
+    renderPagination(meta);
+  }
+
+  function renderPagination(meta) {
+    const container = document.getElementById('news-pagination');
+    if (!meta || meta.pageCount <= 1) { container.innerHTML = ''; return; }
+    let html = '';
+    for (let i = 1; i <= meta.pageCount; i++) {
+      html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="goPage(${i})">${i}</button>`;
+    }
+    container.innerHTML = html;
+  }
+
+  window.goPage = function(p) { currentPage = p; firstLoad = false; loadNews(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      currentFilter = btn.dataset.filter;
+      currentPage = 1;
+      firstLoad = true;
+      loadNews();
+    });
+  });
+
+  let searchTimer;
+  document.getElementById('news-search').addEventListener('input', e => {
+    clearTimeout(searchTimer);
+    searchTimer = setTimeout(() => {
+      searchTerm = e.target.value.trim();
+      currentPage = 1;
+      firstLoad = false;
+      loadNews();
+    }, 350);
+  });
+
+  document.addEventListener('DOMContentLoaded', loadNews);
+})();
+</script>
+</body>
+</html>
