@@ -6,6 +6,109 @@
 <title>Members — Team Perikapsilio</title>
 <link rel="stylesheet" href="style.css">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap" rel="stylesheet">
+<style>
+/* ── BOARD OF DIRECTORS ── */
+.board-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+.board-card {
+  background: var(--bg-card);
+  border: 2px solid var(--accent2);
+  padding: 2rem 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s, background 0.2s;
+}
+.board-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent2);
+}
+.board-card::after {
+  content: '★';
+  position: absolute;
+  font-size: 5rem;
+  color: rgba(255,0,170,0.04);
+  top: 50%; left: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  font-family: monospace;
+}
+.board-card:hover {
+  transform: translateY(-4px);
+  background: var(--bg-card-h);
+}
+.board-avatar {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.25rem;
+  border: 2px solid var(--accent2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,0,170,0.08);
+  position: relative;
+  z-index: 1;
+}
+.board-initials {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 1rem;
+  color: var(--accent2);
+  letter-spacing: 0.05em;
+}
+.board-title-badge {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.4rem;
+  background: var(--accent2);
+  color: #000;
+  padding: 4px 10px;
+  display: inline-block;
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.1em;
+  position: relative;
+  z-index: 1;
+}
+.board-name {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.45rem, 1.2vw, 0.6rem);
+  color: var(--text-bright);
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+  position: relative;
+  z-index: 1;
+}
+.board-bio {
+  font-size: 1.05rem;
+  color: var(--text-dim);
+  line-height: 1.5;
+  position: relative;
+  z-index: 1;
+}
+
+/* Section divider */
+.section-divider {
+  border: none;
+  border-top: 2px solid var(--border);
+  margin: 4rem 0;
+  position: relative;
+}
+.section-divider::after {
+  content: '◆';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--bg);
+  color: var(--border);
+  padding: 0 1rem;
+  font-size: 0.8rem;
+}
+</style>
 </head>
 <body>
 
@@ -27,13 +130,35 @@
 </nav>
 
 <header class="page-hero" data-title="SQUAD">
-  <span class="page-hero-tag">◄ THE ROSTER ►</span>
-  <h1 class="page-hero-title">MEMBERS</h1>
-  <p class="page-hero-sub vt">The players, coaches, and staff who make Team Perikapsilio what it is.</p>
+  <span class="page-hero-tag">◄ THE ORGANIZATION ►</span>
+  <h1 class="page-hero-title">MEMBERS & BOARD</h1>
+  <p class="page-hero-sub vt">The leadership, players, coaches, and staff behind Team Perikapsilio.</p>
 </header>
 
 <main>
-  <section class="section">
+
+  <!-- ── BOARD OF DIRECTORS ── -->
+  <section class="section" id="board-section">
+    <div class="section-header">
+      <span class="section-tag press">◄ LEADERSHIP ►</span>
+      <h2 class="section-title press">BOARD OF DIRECTORS</h2>
+      <p class="section-sub vt">The people who run the organization — strategy, administration, and vision.</p>
+    </div>
+
+    <div class="board-grid" id="board-grid">
+      <div class="card-loading press">LOADING...</div>
+    </div>
+  </section>
+
+  <hr class="section-divider">
+
+  <!-- ── PLAYERS & STAFF ── -->
+  <section class="section" id="members-section">
+    <div class="section-header">
+      <span class="section-tag press">◄ ROSTER ►</span>
+      <h2 class="section-title press">PLAYERS & STAFF</h2>
+      <p class="section-sub vt">The competitors and coaches who take the field.</p>
+    </div>
 
     <div class="filter-bar">
       <span class="filter-label">GAME:</span>
@@ -41,13 +166,12 @@
       <button class="filter-btn" data-filter="CS2">CS2</button>
       <button class="filter-btn" data-filter="VALORANT">VALORANT</button>
       <button class="filter-btn" data-filter="FIFA">FIFA</button>
-      <input class="search-input" id="member-search" type="text" placeholder="SEARCH MEMBERS...">
+      <input class="search-input" id="member-search" type="text" placeholder="SEARCH PLAYERS...">
     </div>
 
     <div class="members-grid" id="members-grid">
       <div class="card-loading press">LOADING...</div>
     </div>
-
   </section>
 
   <!-- JOIN CTA -->
@@ -97,7 +221,8 @@
 <script src="main.js"></script>
 <script>
 (function() {
-  // Palette for pixel avatars — one per member slot
+
+  // ── PIXEL AVATAR for players ──
   const PALETTES = [
     ['#00e5ff','#0a0a1a','#00b8cc','#005f6b'],
     ['#ff00aa','#0a0a1a','#cc0088','#660044'],
@@ -106,10 +231,8 @@
     ['#ff6600','#0a0a1a','#cc5200','#662900'],
     ['#aa00ff','#0a0a1a','#8800cc','#440066'],
   ];
-
   function makePixelAvatar(index) {
     const [c1, c2, c3, c4] = PALETTES[index % PALETTES.length];
-    // 8x8 pixel art face pattern
     const pattern = [
       c2,c2,c1,c1,c1,c1,c2,c2,
       c2,c1,c1,c1,c1,c1,c1,c2,
@@ -123,6 +246,23 @@
     return `<div class="pixel-avatar" aria-hidden="true">${pattern.map(c => `<div class="pa" style="background:${c}"></div>`).join('')}</div>`;
   }
 
+  // ── BOARD CARD ──
+  function renderBoardCard(item) {
+    const a = item.attributes;
+    // Generate initials from name
+    const initials = (a.name || '??').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    return `
+      <article class="board-card">
+        <div class="board-avatar">
+          <span class="board-initials">${initials}</span>
+        </div>
+        <span class="board-title-badge">${a.title || 'DIRECTOR'}</span>
+        <p class="board-name">${a.name || ''}</p>
+        <p class="board-bio vt">${a.bio || ''}</p>
+      </article>`;
+  }
+
+  // ── MEMBER CARD (players) ──
   function renderMemberCard(item, index) {
     const a = item.attributes;
     const gameColor = a.game === 'CS2' ? 'var(--accent)' : a.game === 'VALORANT' ? 'var(--accent2)' : 'var(--accent3)';
@@ -135,10 +275,23 @@
       </article>`;
   }
 
+  // ── LOAD BOARD ──
+  async function loadBoard() {
+    const grid = document.getElementById('board-grid');
+    const data = await API.getBoard();
+    const items = data ? data.data : [];
+    if (!items.length) {
+      grid.innerHTML = PERI.renderEmpty('NO BOARD MEMBERS YET');
+      return;
+    }
+    grid.innerHTML = items.map(renderBoardCard).join('');
+    PERI.initScrollReveal();
+  }
+
+  // ── LOAD PLAYERS ──
   let allMembers = [];
 
   async function loadMembers() {
-    const grid = document.getElementById('members-grid');
     const data = await API.getMembers();
     allMembers = data ? data.data : [];
     renderMembers(allMembers);
@@ -147,13 +300,14 @@
   function renderMembers(items) {
     const grid = document.getElementById('members-grid');
     if (!items.length) {
-      grid.innerHTML = PERI.renderEmpty('NO MEMBERS FOUND');
+      grid.innerHTML = PERI.renderEmpty('NO PLAYERS FOUND');
       return;
     }
     grid.innerHTML = items.map((item, i) => renderMemberCard(item, i)).join('');
     PERI.initScrollReveal();
   }
 
+  // ── FILTERS ──
   document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
@@ -174,7 +328,11 @@
     }, 300);
   });
 
-  document.addEventListener('DOMContentLoaded', loadMembers);
+  document.addEventListener('DOMContentLoaded', () => {
+    loadBoard();
+    loadMembers();
+  });
+
 })();
 </script>
 </body>

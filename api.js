@@ -78,6 +78,12 @@ const API = (() => {
     return request(`/members${q}`);
   }
 
+  // ── BOARD OF DIRECTORS ──
+  async function getBoard({ sort = 'order:asc' } = {}) {
+    const q = buildQuery({ sort, populate: '*' });
+    return request(`/board-members${q}`);
+  }
+
   // ── CONTACT (POST) ──
   async function submitContact(data) {
     return request('/contact-messages', {
@@ -110,6 +116,14 @@ const API = (() => {
       { id: 4, attributes: { username: 'ATHENA', realName: 'Maria L.', role: 'SUPPORT', game: 'VALORANT', order: 4 } },
       { id: 5, attributes: { username: 'ARES99', realName: 'Petros M.', role: 'DUELIST', game: 'VALORANT', order: 5 } },
       { id: 6, attributes: { username: 'POSEIDON', realName: 'Giannis T.', role: 'COACH', game: 'CS2', order: 6 } }
+    ],
+    board: [
+      { id: 1, attributes: { name: 'Charalampos Sidiropoulos', title: 'PRESIDENT', bio: 'Co-founder of Perikapsilio and the driving force behind the organization since day one.', order: 1 } },
+      { id: 2, attributes: { name: 'Christos Kazakos', title: 'VICE PRESIDENT', bio: 'Handles partnerships, sponsorships, and represents the team at official events.', order: 2 } },
+      { id: 3, attributes: { name: 'Tatiana Christoforidou', title: 'SECRETARY', bio: 'Manages internal communications, meeting minutes, and administrative operations.', order: 3 } },
+      { id: 4, attributes: { name: 'Konstantinos Valasiadis', title: 'TREASURER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },
+      { id: 5, attributes: { name: 'Dimitra Papadopoulou', title: 'ARTIST', bio: 'Responsible for IT infrastructure, streaming setup, and technical support at events.', order: 5 } },
+      { id: 6, attributes: { name: 'Ioanna Mpampathanasi', title: 'SOCIAL MEDIA MANAGER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } }
     ]
   };
 
@@ -141,6 +155,10 @@ const API = (() => {
     const res = await getMembers(opts);
     return res || mockResponse('members');
   }
+  async function getBoardWithFallback(opts) {
+    const res = await getBoard(opts);
+    return res || mockResponse('board');
+  }
 
   return {
     getEvents: getEventsWithFallback,
@@ -150,6 +168,7 @@ const API = (() => {
     getNews: getNewsWithFallback,
     getNewsArticle,
     getMembers: getMembersWithFallback,
+    getBoard: getBoardWithFallback,
     submitContact,
     BASE_URL
   };
