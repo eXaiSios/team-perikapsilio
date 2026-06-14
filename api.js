@@ -95,30 +95,30 @@ const API = (() => {
   // ── MOCK DATA (fallback when Strapi is not connected) ──
   const MOCK = {
     events: [
-      { id: 1, attributes: { title: 'LAN PARTY VOL.3', date: '2025-09-14', location: 'Thessaloniki', type: 'LAN', description: 'Annual LAN gathering for all skill levels. Bring your setup!', slug: 'lan-party-vol-3' } },
-      { id: 2, attributes: { title: 'CS2 WORKSHOP', date: '2025-08-22', location: 'Online', type: 'WORKSHOP', description: 'Pro tips and tactics for Counter-Strike 2 from our top players.', slug: 'cs2-workshop' } },
-      { id: 3, attributes: { title: 'GAMING NIGHT', date: '2025-10-05', location: 'Athens', type: 'SOCIAL', description: 'Casual gaming night open to all members and friends.', slug: 'gaming-night' } }
+      //{ id: 1, attributes: { title: 'LAN PARTY VOL.3', date: '2025-09-14', location: 'Thessaloniki', type: 'LAN', description: 'Annual LAN gathering for all skill levels. Bring your setup!', slug: 'lan-party-vol-3' } },
+      //{ id: 2, attributes: { title: 'CS2 WORKSHOP', date: '2025-08-22', location: 'Online', type: 'WORKSHOP', description: 'Pro tips and tactics for Counter-Strike 2 from our top players.', slug: 'cs2-workshop' } },
+      //{ id: 3, attributes: { title: 'GAMING NIGHT', date: '2025-10-05', location: 'Athens', type: 'SOCIAL', description: 'Casual gaming night open to all members and friends.', slug: 'gaming-night' } }
     ],
     tournaments: [
-      { id: 1, attributes: { name: 'GR ESPORTS CUP 2025', game: 'CS2', startDate: '2025-09-01', endDate: '2025-09-30', status: 'UPCOMING', prize: '€2,000', platform: 'PC', slug: 'gr-esports-cup-2025' } },
-      { id: 2, attributes: { name: 'BALKAN LEAGUE S4', game: 'VALORANT', startDate: '2025-08-10', endDate: '2025-10-20', status: 'ACTIVE', prize: '€5,000', platform: 'PC', slug: 'balkan-league-s4' } },
-      { id: 3, attributes: { name: 'UNIVERSITY CUP', game: 'FIFA 25', startDate: '2025-11-01', endDate: '2025-11-30', status: 'UPCOMING', prize: '€500', platform: 'PS5', slug: 'university-cup' } }
+      //{ id: 1, attributes: { name: 'GR ESPORTS CUP 2025', game: 'CS2', startDate: '2025-09-01', endDate: '2025-09-30', status: 'UPCOMING', prize: '€2,000', platform: 'PC', slug: 'gr-esports-cup-2025' } },
+      //{ id: 2, attributes: { name: 'BALKAN LEAGUE S4', game: 'VALORANT', startDate: '2025-08-10', endDate: '2025-10-20', status: 'ACTIVE', prize: '€5,000', platform: 'PC', slug: 'balkan-league-s4' } },
+      //{ id: 3, attributes: { name: 'UNIVERSITY CUP', game: 'FIFA 25', startDate: '2025-11-01', endDate: '2025-11-30', status: 'UPCOMING', prize: '€500', platform: 'PS5', slug: 'university-cup' } }
     ],
     news: [
-      { id: 1, attributes: { title: 'WE QUALIFIED FOR THE BALKAN FINALS', publishedAt: '2025-07-01', category: 'ACHIEVEMENT', summary: 'After six weeks of intense play, Team Perikapsilio has secured a spot in the Balkan Valorant Finals.', slug: 'qualified-balkan-finals' } },
-      { id: 2, attributes: { title: 'NEW ROSTER ANNOUNCEMENT', publishedAt: '2025-06-15', category: 'TEAM', summary: 'We are proud to welcome two new members to the Perikapsilio family for the upcoming season.', slug: 'new-roster' } },
-      { id: 3, attributes: { title: 'LAN PARTY VOL.3 ANNOUNCED', publishedAt: '2025-06-01', category: 'EVENT', summary: 'Save the date — our biggest LAN event yet is coming to Thessaloniki this September.', slug: 'lan-party-announced' } }
+      //{ id: 1, attributes: { title: 'WE QUALIFIED FOR THE BALKAN FINALS', publishedAt: '2025-07-01', category: 'ACHIEVEMENT', summary: 'After six weeks of intense play, Team Perikapsilio has secured a spot in the Balkan Valorant Finals.', slug: 'qualified-balkan-finals' } },
+      //{ id: 2, attributes: { title: 'NEW ROSTER ANNOUNCEMENT', publishedAt: '2025-06-15', category: 'TEAM', summary: 'We are proud to welcome two new members to the Perikapsilio family for the upcoming season.', slug: 'new-roster' } },
+      //{ id: 3, attributes: { title: 'LAN PARTY VOL.3 ANNOUNCED', publishedAt: '2025-06-01', category: 'EVENT', summary: 'Save the date — our biggest LAN event yet is coming to Thessaloniki this September.', slug: 'lan-party-announced' } }
     ],
     members: [
-      { id: 1, attributes: { username: 'ZEUS_GR', realName: 'Alexandros P.', role: 'IGL', game: 'CS2', order: 1 } },
-      { id: 2, attributes: { username: 'ARTEMIS', realName: 'Sofia K.', role: 'RIFLER', game: 'CS2', order: 2 } },
-      { id: 3, attributes: { username: 'HERMES', realName: 'Nikos D.', role: 'AWP', game: 'CS2', order: 3 } },
-      { id: 4, attributes: { username: 'ATHENA', realName: 'Maria L.', role: 'SUPPORT', game: 'VALORANT', order: 4 } },
-      { id: 5, attributes: { username: 'ARES99', realName: 'Petros M.', role: 'DUELIST', game: 'VALORANT', order: 5 } },
-      { id: 6, attributes: { username: 'POSEIDON', realName: 'Giannis T.', role: 'COACH', game: 'CS2', order: 6 } }
+      //{ id: 1, attributes: { username: 'ZEUS_GR', realName: 'Alexandros P.', role: 'IGL', game: 'CS2', order: 1 } },
+      //{ id: 2, attributes: { username: 'ARTEMIS', realName: 'Sofia K.', role: 'RIFLER', game: 'CS2', order: 2 } },
+      //{ id: 3, attributes: { username: 'HERMES', realName: 'Nikos D.', role: 'AWP', game: 'CS2', order: 3 } },
+      //{ id: 4, attributes: { username: 'ATHENA', realName: 'Maria L.', role: 'SUPPORT', game: 'VALORANT', order: 4 } },
+      //{ id: 5, attributes: { username: 'ARES99', realName: 'Petros M.', role: 'DUELIST', game: 'VALORANT', order: 5 } },
+      //{ id: 6, attributes: { username: 'POSEIDON', realName: 'Giannis T.', role: 'COACH', game: 'CS2', order: 6 } }
     ],
     board: [
-      { id: 1, attributes: { name: 'Charalampos Sidiropoulos', title: 'PRESIDENT', bio: 'Co-founder of Perikapsilio and the driving force behind the organization since day one.', order: 1 } },
+      { id: 1, attributes: { name: 'Charalampos Sidiropoulos', title: 'PRESIDENT', bio: 'Founder of Perikapsilio and the driving force behind the organization since day one.', order: 1 } },
       { id: 2, attributes: { name: 'Christos Kazakos', title: 'VICE PRESIDENT', bio: 'Handles partnerships, sponsorships, and represents the team at official events.', order: 2 } },
       { id: 3, attributes: { name: 'Tatiana Christoforidou', title: 'SECRETARY', bio: 'Manages internal communications, meeting minutes, and administrative operations.', order: 3 } },
       { id: 4, attributes: { name: 'Konstantinos Valasiadis', title: 'TREASURER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },

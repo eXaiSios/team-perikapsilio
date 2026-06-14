@@ -70,6 +70,14 @@ Create these collection types in the Strapi admin (`/admin`):
 | game     | Enum    | CS2, VALORANT, FIFA            |
 | order    | Integer | Display order                 |
 
+#### Directors
+| Field    | Type    | Notes                          |
+|----------|---------|-------------------------------|
+| name     | Text    | Required — in-game alias       |
+| title    | Text    | Required                      |
+| bio      | Text    | IGL, AWP, RIFLER, SUPPORT, DUELIST, COACH |
+| order    | Integer | Display order                 |
+
 #### Contact Messages
 | Field   | Type | Notes     |
 |---------|------|-----------|
