@@ -73,9 +73,9 @@ Create these collection types in the Strapi admin (`/admin`):
 #### Directors
 | Field    | Type    | Notes                          |
 |----------|---------|-------------------------------|
-| name     | Text    | Required — in-game alias       |
+| name     | Text    | Required        |
 | title    | Text    | Required                      |
-| bio      | Text    | IGL, AWP, RIFLER, SUPPORT, DUELIST, COACH |
+| bio      | Text    |                               |
 | order    | Integer | Display order                 |
 
 #### Contact Messages
