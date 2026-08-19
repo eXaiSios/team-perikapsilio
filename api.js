@@ -123,7 +123,8 @@ const API = (() => {
       { id: 3, attributes: { name: 'Tatiana Christoforidou', title: 'SECRETARY', bio: 'Manages internal communications, meeting minutes, and administrative operations.', order: 3 } },
       { id: 4, attributes: { name: 'Konstantinos Valasiadis', title: 'TREASURER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },
       { id: 5, attributes: { name: 'Dimitra Papadopoulou', title: 'ARTIST', bio: 'Responsible for IT infrastructure, streaming setup, and technical support at events.', order: 5 } },
-      { id: 6, attributes: { name: 'Ioanna Mpampathanasi', title: 'SOCIAL MEDIA MANAGER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } }
+      { id: 6, attributes: { name: 'Ioanna Mpampathanasi', title: 'SOCIAL MEDIA MANAGER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },
+      { id: 7, attributes: { name: 'Eftihis Papapsifakis', title: 'SITE MEDIA MANAGER', bio: 'My primary interests lie in software engineering', order: 4 } }
     ]
   };
 
