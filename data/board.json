@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "name": "Georgios Kafentzis",
+      "title": "COORDINATOR PROF.",
+      "image": "",
+      "bio": "",
+      "order": 0,
+      "socials": []
+    },
+    {
       "name": "Charalampos Sidiropoulos",
       "title": "PRESIDENT",
       "image": "",
@@ -64,14 +72,6 @@
       "image": "",
       "bio": "My primary interests lie in software engineering",
       "order": 7,
-      "socials": []
-    },
-    {
-      "name": "Georgios Kafentzis",
-      "title": "Coordinator Prof.",
-      "image": "",
-      "bio": "",
-      "order": 0,
       "socials": []
     }
   ]
