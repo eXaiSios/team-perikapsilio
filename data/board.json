@@ -48,6 +48,13 @@
       "image": "",
       "bio": "My primary interests lie in software engineering",
       "order": 7
+    },
+    {
+      "name": "Georgios Kafentzis",
+      "title": "Coordinator Prof.",
+      "image": "",
+      "bio": "",
+      "order": 1
     }
   ]
 }
