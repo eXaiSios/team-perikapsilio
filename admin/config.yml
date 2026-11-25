@@ -133,7 +133,7 @@ collections:
                   - label: "Platform"
                     name: "platform"
                     widget: "select"
-                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "Steam", "Kick", "Website"]
+                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "LinkedIn", "Steam", "Kick", "Website"]
                     default: "Instagram"
                   - { label: "URL", name: "url", widget: "string", required: true }
 
@@ -163,6 +163,6 @@ collections:
                   - label: "Platform"
                     name: "platform"
                     widget: "select"
-                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "Steam", "Kick", "Website"]
+                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "LinkedIn", "Steam", "Kick", "Website"]
                     default: "Instagram"
                   - { label: "URL", name: "url", widget: "string", required: true }
