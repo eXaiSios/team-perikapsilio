@@ -1,28 +1,37 @@
 {
   "items": [
     {
-      "slug": "qualified-balkan-finals",
       "title": "WE QUALIFIED FOR THE BALKAN FINALS",
+      "slug": "qualified-balkan-finals",
+      "author": "Team Perikapsilio",
       "publishedAt": "2026-07-01T12:00:00.000Z",
       "category": "ACHIEVEMENT",
+      "coverImage": "https://picsum.photos/id/200/1920/1280.webp",
       "summary": "After six weeks of intense play, Team Perikapsilio has secured a spot in the Balkan Valorant Finals.",
-      "body": "After six weeks of intense group-stage play and a nail-biting upper-bracket series, Team Perikapsilio has officially secured a spot in the Balkan Valorant Finals.\n\nThank you to everyone in the community who tuned in, cheered from Discord, and supported the squad throughout the qualifiers. Preparations for the finals start this week!"
+      "body": "After six weeks of intense group-stage play and a nail-biting upper-bracket series, Team Perikapsilio has officially secured a spot in the Balkan Valorant Finals.\n\nThank you to everyone in the community who tuned in, cheered from Discord, and supported the squad throughout the qualifiers. Preparations for the finals start this week!",
+      "media": []
     },
     {
-      "slug": "new-roster-2026",
       "title": "NEW ROSTER ANNOUNCEMENT",
+      "slug": "new-roster-2026",
+      "author": "Team Perikapsilio",
       "publishedAt": "2026-06-15T12:00:00.000Z",
       "category": "TEAM",
+      "coverImage": "",
       "summary": "We are proud to welcome new players to the Perikapsilio family for the upcoming competitive season.",
-      "body": "We are proud to welcome new competitors to the Team Perikapsilio family for the 2026 season.\n\nOur CS2 and Valorant divisions have been scrimming daily to build synergy ahead of the summer cups. Check out the Members page to meet the full squad."
+      "body": "We are proud to welcome new competitors to the Team Perikapsilio family for the 2026 season.\n\nOur CS2 and Valorant divisions have been scrimming daily to build synergy ahead of the summer cups. Check out the Members page to meet the full squad.",
+      "media": []
     },
     {
-      "slug": "lan-party-vol-3-announced",
       "title": "LAN PARTY VOL.3 ANNOUNCED",
+      "slug": "lan-party-vol-3-announced",
+      "author": "Team Perikapsilio",
       "publishedAt": "2026-06-01T12:00:00.000Z",
       "category": "EVENT",
+      "coverImage": "",
       "summary": "Save the date — our biggest LAN event yet is coming to Thessaloniki this September.",
-      "body": "Save the date — LAN Party Vol.3 is officially coming to Thessaloniki on September 14!\n\nExpect casual brackets, 5v5 customs, retro corner setups, and giveaways. Registration details will be shared on our Discord server soon."
+      "body": "Save the date — LAN Party Vol.3 is officially coming to Thessaloniki on September 14!\n\nExpect casual brackets, 5v5 customs, retro corner setups, and giveaways. Registration details will be shared on our Discord server soon.",
+      "media": []
     }
   ]
 }
