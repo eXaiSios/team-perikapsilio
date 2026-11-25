@@ -16,15 +16,32 @@ const API = (() => {
     return 'data/';
   })();
 
+  const GITHUB_REPO = 'eXaiSios/team-perikapsilio';
+  const GITHUB_BRANCH = 'main';
   const cache = {};
 
-  // Load a collection directly from data/<name>.json with cache-busting
+  async function fetchJsonWithGitHubLive(name) {
+    const ghUrl = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/${name}.json?ref=${GITHUB_BRANCH}&t=${Date.now()}`;
+    try {
+      const ghRes = await fetch(ghUrl, {
+        cache: 'no-store',
+        headers: { 'Accept': 'application/vnd.github.raw+json' }
+      });
+      if (ghRes.ok) return await ghRes.json();
+    } catch (_) {
+      // Fall back to local static file
+    }
+
+    const res = await fetch(`${DATA_BASE}${name}.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return await res.json();
+  }
+
+  // Load a collection from GitHub live (public repo) with local data/<name>.json fallback
   async function loadCollection(name) {
     if (cache[name]) return cache[name];
     try {
-      const res = await fetch(`${DATA_BASE}${name}.json?t=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+      const json = await fetchJsonWithGitHubLive(name);
       const rawItems = Array.isArray(json) ? json : ((json && (json.items || json.data)) || []);
       const normalized = rawItems.map((item, idx) => {
         if (item && item.attributes) return item;
@@ -148,9 +165,7 @@ const API = (() => {
   async function getTags() {
     if (cache.tags) return cache.tags;
     try {
-      const res = await fetch(`${DATA_BASE}tags.json?t=${Date.now()}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const json = await res.json();
+      const json = await fetchJsonWithGitHubLive('tags');
       const normalize = (arr) => (Array.isArray(arr) ? arr : [])
         .map(t => (typeof t === 'string' ? t : (t && t.name) || '').trim().toUpperCase())
         .filter(Boolean);

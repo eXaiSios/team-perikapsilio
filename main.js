@@ -29,7 +29,11 @@ function resolveMediaUrl(url) {
   if (!url) return '';
   const trimmed = String(url).trim();
   if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith('data:')) return trimmed;
-  return SITE_BASE + trimmed.replace(/^\/+/, '');
+  const clean = trimmed.replace(/^\/+/, '');
+  if (clean.startsWith('assets/uploads/')) {
+    return `https://raw.githubusercontent.com/eXaiSios/team-perikapsilio/main/${clean}`;
+  }
+  return SITE_BASE + clean;
 }
 
 function getYouTubeEmbedUrl(url) {
