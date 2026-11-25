@@ -26,11 +26,7 @@ collections:
               - { label: "Slug", name: "slug", widget: "string", required: true }
               - { label: "Date", name: "date", widget: "datetime", required: true }
               - { label: "Location", name: "location", widget: "string", default: "TBA" }
-              - label: "Type"
-                name: "type"
-                widget: "select"
-                options: ["LAN", "WORKSHOP", "SOCIAL", "TOURNAMENT"]
-                default: "LAN"
+              - { label: "Type / Tag", name: "type", widget: "string", default: "LAN", hint: "e.g. LAN, WORKSHOP, SOCIAL, TOURNAMENT, or any custom tag" }
               - { label: "Description", name: "description", widget: "text", required: false }
 
       - file: "data/tournaments.json"
@@ -118,11 +114,7 @@ collections:
                 widget: "select"
                 options: ["IGL", "AWP", "RIFLER", "SUPPORT", "DUELIST", "COACH"]
                 default: "RIFLER"
-              - label: "Game"
-                name: "game"
-                widget: "select"
-                options: ["CS2", "VALORANT", "FIFA"]
-                default: "CS2"
+              - { label: "Game / Tag", name: "game", widget: "string", default: "CS2", hint: "e.g. CS2, VALORANT, FIFA, or any custom game tag" }
               - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }
               - label: "Social Media"
                 name: "socials"
@@ -136,6 +128,28 @@ collections:
                     options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "LinkedIn", "Steam", "Kick", "Website"]
                     default: "Instagram"
                   - { label: "URL", name: "url", widget: "string", required: true }
+
+      - file: "data/tags.json"
+        label: "Tags & Filters"
+        name: "tags"
+        format: "json"
+        fields:
+          - label: "Players & Staff Game Tags"
+            name: "gameTags"
+            widget: "list"
+            required: false
+            min: 0
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Tag Name", name: "name", widget: "string", required: true }
+          - label: "Events Filter Tags"
+            name: "eventTags"
+            widget: "list"
+            required: false
+            min: 0
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Tag Name", name: "name", widget: "string", required: true }
 
       - file: "data/board.json"
         label: "Board of Directors"
@@ -166,3 +180,25 @@ collections:
                     options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "LinkedIn", "Steam", "Kick", "Website"]
                     default: "Instagram"
                   - { label: "URL", name: "url", widget: "string", required: true }
+
+      - file: "data/tags.json"
+        label: "Tags & Filters"
+        name: "tags"
+        format: "json"
+        fields:
+          - label: "Players & Staff Game Tags"
+            name: "gameTags"
+            widget: "list"
+            required: false
+            min: 0
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Tag Name", name: "name", widget: "string", required: true }
+          - label: "Events Filter Tags"
+            name: "eventTags"
+            widget: "list"
+            required: false
+            min: 0
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "Tag Name", name: "name", widget: "string", required: true }

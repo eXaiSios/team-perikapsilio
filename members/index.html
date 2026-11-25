@@ -170,12 +170,9 @@
       <p class="section-sub vt">The competitors and coaches who take the field.</p>
     </div>
 
-    <div class="filter-bar">
+    <div class="filter-bar" id="member-filter-bar">
       <span class="filter-label">GAME:</span>
       <button class="filter-btn active" data-filter="">ALL</button>
-      <button class="filter-btn" data-filter="CS2">CS2</button>
-      <button class="filter-btn" data-filter="VALORANT">VALORANT</button>
-      <button class="filter-btn" data-filter="FIFA">FIFA</button>
       <input class="search-input" id="member-search" type="text" placeholder="SEARCH PLAYERS...">
     </div>
 
@@ -368,18 +365,32 @@
     PERI.initScrollReveal();
   }
 
-  // ── FILTERS ──
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      activeGame = btn.dataset.filter.toUpperCase();
-      applyMemberFilters();
+  // ── FILTERS (dynamic from Tags & Filters) ──
+  const memberFilterBar = document.getElementById('member-filter-bar');
+  const memberSearchInput = document.getElementById('member-search');
+
+  async function initGameTags() {
+    const { gameTags } = await API.getTags();
+    gameTags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = tag;
+      btn.textContent = tag;
+      memberFilterBar.insertBefore(btn, memberSearchInput);
     });
+  }
+
+  memberFilterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    memberFilterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeGame = btn.dataset.filter.toUpperCase();
+    applyMemberFilters();
   });
 
   let searchTimer;
-  document.getElementById('member-search').addEventListener('input', e => {
+  memberSearchInput.addEventListener('input', e => {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
       searchTerm = e.target.value.trim();
@@ -388,6 +399,7 @@
   });
 
   document.addEventListener('DOMContentLoaded', () => {
+    initGameTags();
     loadBoard();
     loadMembers();
   });

@@ -144,6 +144,26 @@ const API = (() => {
     return queryCollection(items, { page: 1, pageSize: 100, sort });
   }
 
+  // ── TAGS & FILTERS ──
+  async function getTags() {
+    if (cache.tags) return cache.tags;
+    try {
+      const res = await fetch(`${DATA_BASE}tags.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const normalize = (arr) => (Array.isArray(arr) ? arr : [])
+        .map(t => (typeof t === 'string' ? t : (t && t.name) || '').trim().toUpperCase())
+        .filter(Boolean);
+      cache.tags = {
+        gameTags: normalize(json && json.gameTags),
+        eventTags: normalize(json && json.eventTags)
+      };
+      return cache.tags;
+    } catch (err) {
+      return { gameTags: ['CS2', 'VALORANT', 'FIFA'], eventTags: ['LAN', 'WORKSHOP', 'SOCIAL', 'TOURNAMENT'] };
+    }
+  }
+
   // ── CONTACT (optional endpoint or mailto fallback) ──
   async function submitContact(data) {
     const endpoint = window.CONTACT_ENDPOINT || '';
@@ -179,6 +199,7 @@ const API = (() => {
     getNewsArticle,
     getMembers,
     getBoard,
+    getTags,
     submitContact,
     DATA_BASE
   };

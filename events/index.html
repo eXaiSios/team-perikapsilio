@@ -36,13 +36,9 @@
 <main>
   <section class="section">
 
-    <div class="filter-bar">
+    <div class="filter-bar" id="event-filter-bar">
       <span class="filter-label">FILTER:</span>
       <button class="filter-btn active" data-filter="">ALL</button>
-      <button class="filter-btn" data-filter="LAN">LAN</button>
-      <button class="filter-btn" data-filter="WORKSHOP">WORKSHOP</button>
-      <button class="filter-btn" data-filter="SOCIAL">SOCIAL</button>
-      <button class="filter-btn" data-filter="TOURNAMENT">TOURNAMENT</button>
       <input class="search-input" id="event-search" type="text" placeholder="SEARCH EVENTS...">
     </div>
 
@@ -180,20 +176,34 @@
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  // Filter buttons
-  document.querySelectorAll('.filter-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      currentFilter = btn.dataset.filter;
-      currentPage = 1;
-      loadEvents();
+  // Filter buttons (dynamic from Tags & Filters)
+  const filterBar = document.getElementById('event-filter-bar');
+  const searchInput = document.getElementById('event-search');
+
+  async function initEventTags() {
+    const { eventTags } = await API.getTags();
+    eventTags.forEach(tag => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.dataset.filter = tag;
+      btn.textContent = tag;
+      filterBar.insertBefore(btn, searchInput);
     });
+  }
+
+  filterBar.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    filterBar.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentFilter = btn.dataset.filter;
+    currentPage = 1;
+    loadEvents();
   });
 
   // Search
   let searchTimer;
-  document.getElementById('event-search').addEventListener('input', e => {
+  searchInput.addEventListener('input', e => {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
       searchTerm = e.target.value.trim();
@@ -202,7 +212,10 @@
     }, 350);
   });
 
-  document.addEventListener('DOMContentLoaded', loadEvents);
+  document.addEventListener('DOMContentLoaded', () => {
+    initEventTags();
+    loadEvents();
+  });
 })();
 </script>
 </body>
