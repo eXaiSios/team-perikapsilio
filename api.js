@@ -23,13 +23,13 @@ const API = (() => {
   const cache = {};
 
   async function fetchLocalJson(name) {
-    const res = await fetch(`${DATA_BASE}${name}.json`, { cache: 'no-store' });
+    const res = await fetch(`${DATA_BASE}${name}.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   }
 
   async function fetchGitHubLiveJson(name) {
-    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/${name}.json?ref=${GITHUB_BRANCH}&t=${Math.floor(Date.now() / 10000)}`;
+    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/${name}.json?ref=${GITHUB_BRANCH}&t=${Date.now()}`;
     const res = await fetch(url, {
       headers: { 'Accept': 'application/vnd.github.raw+json' },
       cache: 'no-store'
