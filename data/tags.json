@@ -9,15 +9,6 @@
   ],
   "eventTags": [
     {
-      "name": "LAN"
-    },
-    {
-      "name": "WORKSHOP"
-    },
-    {
-      "name": "SOCIAL"
-    },
-    {
       "name": "TOURNAMENT"
     }
   ]
