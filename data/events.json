@@ -1,6 +1,14 @@
 {
   "items": [
     {
+      "title": "Test Tournament CSD",
+      "slug": "Tournament LOL",
+      "date": "2026-11-25T10:27:00",
+      "location": "CSD",
+      "type": "TOURNAMENT",
+      "description": ""
+    },
+    {
       "title": "LAN PARTY VOL.3",
       "slug": "lan-party-vol-3",
       "date": "2026-09-14T18:00:00.000Z",
@@ -23,14 +31,6 @@
       "location": "Athens",
       "type": "SOCIAL",
       "description": "Casual gaming night open to all members and friends. Retro consoles, co-op challenges, and community hangout."
-    },
-    {
-      "title": "Test Tournament CSD",
-      "slug": "Tournament LOL",
-      "date": "2026-11-25T10:27:00",
-      "location": "CSD",
-      "type": "TOURNAMENT",
-      "description": ""
     }
   ]
 }
