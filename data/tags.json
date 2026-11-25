@@ -1,13 +1,24 @@
 {
   "gameTags": [
-    { "name": "CS2" },
-    { "name": "VALORANT" },
-    { "name": "FIFA" }
+    {
+      "name": "CS2"
+    },
+    {
+      "name": "LoL"
+    }
   ],
   "eventTags": [
-    { "name": "LAN" },
-    { "name": "WORKSHOP" },
-    { "name": "SOCIAL" },
-    { "name": "TOURNAMENT" }
+    {
+      "name": "LAN"
+    },
+    {
+      "name": "WORKSHOP"
+    },
+    {
+      "name": "SOCIAL"
+    },
+    {
+      "name": "TOURNAMENT"
+    }
   ]
 }
