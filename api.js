@@ -22,7 +22,7 @@ const API = (() => {
   async function loadCollection(name) {
     if (cache[name]) return cache[name];
     try {
-      const res = await fetch(`${DATA_BASE}${name}.json`, { cache: 'no-cache' });
+      const res = await fetch(`${DATA_BASE}${name}.json`, { cache: 'no-store' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
       const rawItems = Array.isArray(json) ? json : ((json && (json.items || json.data)) || []);
