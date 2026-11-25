@@ -234,7 +234,6 @@ ul { list-style: none; }
   margin: 0 auto 1.5rem;
   width: 54px;
   animation: floatPixel 3.2s ease-in-out infinite;
-  filter: drop-shadow(0 0 12px rgba(0, 229, 255, 0.35));
 }
 @keyframes floatPixel {
   0%, 100% { transform: translateY(0); }
