@@ -73,14 +73,30 @@ collections:
             fields:
               - { label: "Title", name: "title", widget: "string", required: true }
               - { label: "Slug", name: "slug", widget: "string", required: true }
+              - { label: "Author", name: "author", widget: "string", required: false, default: "Team Perikapsilio" }
               - { label: "Published At", name: "publishedAt", widget: "datetime", required: true }
               - label: "Category"
                 name: "category"
                 widget: "select"
                 options: ["ACHIEVEMENT", "TEAM", "EVENT", "ANNOUNCEMENT"]
                 default: "ANNOUNCEMENT"
+              - { label: "Cover Image", name: "coverImage", widget: "image", required: false }
               - { label: "Summary", name: "summary", widget: "text", required: false }
-              - { label: "Body", name: "body", widget: "text", required: false }
+              - { label: "Body", name: "body", widget: "markdown", required: false }
+              - label: "Media (Images, Videos, YouTube)"
+                name: "media"
+                widget: "list"
+                required: false
+                summary: "{{fields.kind}} — {{fields.caption}}"
+                fields:
+                  - label: "Media Type"
+                    name: "kind"
+                    widget: "select"
+                    options: ["Image", "Video File", "YouTube / Embed URL"]
+                    default: "Image"
+                  - { label: "Upload File (Image or Video)", name: "file", widget: "file", required: false }
+                  - { label: "External URL (YouTube / Image / Video)", name: "url", widget: "string", required: false }
+                  - { label: "Caption", name: "caption", widget: "string", required: false }
 
       - file: "data/members.json"
         label: "Players & Staff"

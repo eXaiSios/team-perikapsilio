@@ -25,12 +25,95 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
+function resolveMediaUrl(url) {
+  if (!url) return '';
+  const trimmed = String(url).trim();
+  if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith('data:')) return trimmed;
+  return SITE_BASE + trimmed.replace(/^\/+/, '');
+}
+
+function getYouTubeEmbedUrl(url) {
+  const m = String(url).match(/(?:youtube\.com\/(?:watch\?v=|shorts\/|embed\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+  return m ? `https://www.youtube.com/embed/${m[1]}` : null;
+}
+
+function renderMediaItem(item) {
+  if (!item) return '';
+  const rawSrc = (item.file || item.url || '').trim();
+  if (!rawSrc) return '';
+  const kind = (item.kind || '').toLowerCase();
+  const caption = item.caption ? `<figcaption class="article-media-cap vt">${escapeHtml(item.caption)}</figcaption>` : '';
+
+  const yt = getYouTubeEmbedUrl(rawSrc);
+  if (yt || kind.includes('youtube') || kind.includes('embed')) {
+    const embedSrc = yt || (/^https?:\/\//i.test(rawSrc) ? rawSrc : '');
+    if (!embedSrc) return '';
+    return `
+      <figure class="article-media-item">
+        <div class="article-video-wrap">
+          <iframe src="${escapeHtml(embedSrc)}" title="${escapeHtml(item.caption || 'Video')}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+        ${caption}
+      </figure>`;
+  }
+
+  const src = escapeHtml(resolveMediaUrl(rawSrc));
+  if (kind.includes('video') || /\.(mp4|webm|ogg|mov)(\?.*)?$/i.test(rawSrc)) {
+    return `
+      <figure class="article-media-item">
+        <video class="article-video" controls playsinline preload="metadata" src="${src}"></video>
+        ${caption}
+      </figure>`;
+  }
+
+  return `
+    <figure class="article-media-item">
+      <img class="article-img" src="${src}" alt="${escapeHtml(item.caption || 'Article media')}" loading="lazy">
+      ${caption}
+    </figure>`;
+}
+
 function formatRichText(str) {
   if (!str) return '';
-  return escapeHtml(str)
-    .split(/\n{2,}/)
-    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
-    .join('');
+  const lines = String(str).replace(/\r\n/g, '\n').split('\n');
+  const out = [];
+  let inList = false;
+
+  const inlineMd = (text) => {
+    let s = escapeHtml(text);
+    s = s.replace(/!\[([^\]]*)\]\(([^)\s]+)\)/g, (_, alt, src) => `<img class="article-inline-img" src="${escapeHtml(resolveMediaUrl(src))}" alt="${alt}" loading="lazy">`);
+    s = s.replace(/\[([^\]]+)\]\((https?:\/\/[^)\s]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer" class="article-inline-link">$1</a>');
+    s = s.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+    s = s.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+    s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
+    return s;
+  };
+
+  for (const line of lines) {
+    const t = line.trim();
+    if (!t) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      continue;
+    }
+    if (t.startsWith('### ')) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      out.push(`<h3>${inlineMd(t.slice(4))}</h3>`);
+    } else if (t.startsWith('## ')) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      out.push(`<h2>${inlineMd(t.slice(3))}</h2>`);
+    } else if (t.startsWith('# ')) {
+      if (inList) { out.push('</ul>'); inList = false; }
+      out.push(`<h2>${inlineMd(t.slice(2))}</h2>`);
+    } else if (/^[-*]\s+/.test(t)) {
+      if (!inList) { out.push('<ul class="article-list">'); inList = true; }
+      out.push(`<li>${inlineMd(t.replace(/^[-*]\s+/, ''))}</li>`);
+    } else {
+      if (inList) { out.push('</ul>'); inList = false; }
+      out.push(`<p>${inlineMd(t)}</p>`);
+    }
+  }
+  if (inList) out.push('</ul>');
+  return out.join('');
 }
 
 // ── STARS ──
@@ -141,11 +224,13 @@ function renderTournamentCard(item) {
 function renderNewsCard(item) {
   const a = item.attributes;
   const slug = encodeURIComponent(a.slug || item.id);
+  const authorMeta = a.author ? `<p class="card-meta"><span class="icon">✍️</span> ${escapeHtml(a.author)}</p>` : '';
   return `
     <article class="card card-news" onclick="window.location='${SITE_BASE}news/?slug=${slug}'">
       <span class="card-badge">${escapeHtml(a.category || 'NEWS')}</span>
       <h3 class="card-title">${escapeHtml(a.title)}</h3>
       <p class="card-meta"><span class="icon">📰</span> ${formatDate(a.publishedAt)}</p>
+      ${authorMeta}
       <p class="card-desc vt">${escapeHtml(a.summary || '')}</p>
       <span class="card-link press">READ →</span>
     </article>`;
@@ -222,6 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
 window.PERI = {
   SITE_BASE,
   escapeHtml,
+  resolveMediaUrl,
+  renderMediaItem,
   formatRichText,
   formatDate,
   renderEventCard,

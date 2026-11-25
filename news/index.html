@@ -107,6 +107,12 @@
     const a = item.attributes;
     const section = document.querySelector('main .section');
     document.title = `${a.title} — Team Perikapsilio`;
+    const coverHtml = a.coverImage
+      ? `<img class="article-cover" src="${PERI.escapeHtml(PERI.resolveMediaUrl(a.coverImage))}" alt="${PERI.escapeHtml(a.title)}">`
+      : '';
+    const mediaHtml = Array.isArray(a.media) && a.media.length
+      ? `<div class="article-media-grid">${a.media.map(PERI.renderMediaItem).join('')}</div>`
+      : '';
     section.innerHTML = `
       <div class="article-back">
         <a href="./" class="btn btn-ghost press">← BACK TO NEWS</a>
@@ -117,12 +123,15 @@
           <h1 class="article-title">${PERI.escapeHtml(a.title)}</h1>
           <div class="article-meta vt">
             <span>📰 ${PERI.formatDate(a.publishedAt)}</span>
+            ${a.author ? `<span>✍️ ${PERI.escapeHtml(a.author)}</span>` : ''}
           </div>
         </div>
+        ${coverHtml}
         ${a.summary ? `<p class="vt" style="font-size:1.35rem;color:var(--text-bright);line-height:1.6">${PERI.escapeHtml(a.summary)}</p>` : ''}
         <div class="article-body vt">
           ${PERI.formatRichText(a.body || a.summary || 'No article content available.')}
         </div>
+        ${mediaHtml}
       </article>
     `;
   }
@@ -170,7 +179,7 @@
         <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location='?slug=${slug}'">
           <span class="card-badge" style="background:var(--accent3);color:#000">★ FEATURED — ${PERI.escapeHtml(a.category || 'NEWS')}</span>
           <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${PERI.escapeHtml(a.title)}</h2>
-          <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)}</p>
+          <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)} ${a.author ? `· ✍️ ${PERI.escapeHtml(a.author)}` : ''}</p>
           <p class="card-desc vt" style="font-size:1.2rem">${PERI.escapeHtml(a.summary || '')}</p>
           <span class="card-link press">READ FULL ARTICLE →</span>
         </article>`;
