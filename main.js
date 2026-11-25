@@ -89,12 +89,12 @@ function initScrollReveal() {
       }
     });
   }, { threshold: 0.1 });
-  cards.forEach(c => {
+  cards.forEach((c, idx) => {
     if (c.dataset.revealInit) return;
     c.dataset.revealInit = '1';
     c.style.opacity = '0';
     c.style.transform = 'translateY(20px)';
-    c.style.transition = 'opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, background 0.2s';
+    c.style.transition = `opacity 0.4s ease ${(idx % 6) * 60}ms, transform 0.4s ease ${(idx % 6) * 60}ms, border-color 0.2s, box-shadow 0.2s, background 0.2s`;
     io.observe(c);
   });
 }
