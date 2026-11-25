@@ -29,12 +29,7 @@ function resolveMediaUrl(url) {
   if (!url) return '';
   const trimmed = String(url).trim();
   if (/^https?:\/\//i.test(trimmed) || trimmed.startsWith('data:')) return trimmed;
-  const clean = trimmed.replace(/^\/+/, '');
-  const isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
-  if (!isLocal && clean.startsWith('assets/uploads/')) {
-    return `https://raw.githubusercontent.com/eXaiSios/team-perikapsilio/main/${clean}`;
-  }
-  return SITE_BASE + clean;
+  return SITE_BASE + trimmed.replace(/^\/+/, '');
 }
 
 function getYouTubeEmbedUrl(url) {

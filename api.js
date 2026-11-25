@@ -16,42 +16,15 @@ const API = (() => {
     return 'data/';
   })();
 
-  const GITHUB_REPO = 'eXaiSios/team-perikapsilio';
-  const GITHUB_BRANCH = 'main';
-  const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1' || location.protocol === 'file:';
-
   const cache = {};
 
-  async function fetchLocalJson(name) {
-    const res = await fetch(`${DATA_BASE}${name}.json?t=${Date.now()}`, { cache: 'no-store' });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return res.json();
-  }
-
-  async function fetchGitHubLiveJson(name) {
-    const url = `https://api.github.com/repos/${GITHUB_REPO}/contents/data/${name}.json?ref=${GITHUB_BRANCH}&t=${Date.now()}`;
-    const res = await fetch(url, {
-      headers: { 'Accept': 'application/vnd.github.raw+json' },
-      cache: 'no-store'
-    });
-    if (!res.ok) throw new Error(`GitHub API ${res.status}`);
-    return res.json();
-  }
-
-  // Load a collection: instant live GitHub fetch in production with local data/*.json fallback
+  // Load a collection directly from data/<name>.json with cache-busting
   async function loadCollection(name) {
     if (cache[name]) return cache[name];
     try {
-      let json;
-      if (IS_LOCAL) {
-        json = await fetchLocalJson(name);
-      } else {
-        try {
-          json = await fetchGitHubLiveJson(name);
-        } catch (liveErr) {
-          json = await fetchLocalJson(name);
-        }
-      }
+      const res = await fetch(`${DATA_BASE}${name}.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
       const rawItems = Array.isArray(json) ? json : ((json && (json.items || json.data)) || []);
       const normalized = rawItems.map((item, idx) => {
         if (item && item.attributes) return item;
