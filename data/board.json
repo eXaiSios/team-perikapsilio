@@ -5,56 +5,69 @@
       "title": "PRESIDENT",
       "image": "https://picsum.photos/id/358/1920/1280.webp",
       "bio": "Founder of Perikapsilio and the driving force behind the organization since day one.",
-      "order": 1
+      "order": 1,
+      "socials": [
+        {
+          "platform": "Instagram",
+          "url": "fsfsfs"
+        }
+      ]
     },
     {
       "name": "Christos Kazakos",
       "title": "VICE PRESIDENT",
       "image": "",
       "bio": "Handles partnerships, sponsorships, and represents the team at official events.",
-      "order": 2
+      "order": 2,
+      "socials": []
     },
     {
       "name": "Tatiana Christoforidou",
       "title": "SECRETARY",
       "image": "",
       "bio": "Manages internal communications, meeting minutes, and administrative operations.",
-      "order": 3
+      "order": 3,
+      "socials": []
     },
     {
       "name": "Konstantinos Valasiadis",
       "title": "TREASURER",
       "image": "",
       "bio": "Oversees the team budget, sponsorship funds, and financial reporting.",
-      "order": 4
+      "order": 4,
+      "socials": []
     },
     {
       "name": "Dimitra Papadopoulou",
       "title": "ARTIST",
       "image": "",
       "bio": "Leads visual identity, graphic design, and creative direction for the team.",
-      "order": 5
+      "order": 5,
+      "socials": []
     },
     {
       "name": "Ioanna Mpampathanasi",
       "title": "SOCIAL MEDIA MANAGER",
       "image": "",
       "bio": "Manages social channels, community engagement, and event coverage.",
-      "order": 6
+      "order": 6,
+      "socials": []
     },
     {
       "name": "Eftihis Papapsifakis",
       "title": "SITE MEDIA MANAGER",
       "image": "",
       "bio": "My primary interests lie in software engineering",
-      "order": 7
+      "order": 7,
+      "socials": []
     },
     {
       "name": "Georgios Kafentzis",
       "title": "Coordinator Prof.",
       "image": "",
       "bio": "",
-      "order": 0
+      "order": 0,
+      "socials": []
     }
   ]
 }
