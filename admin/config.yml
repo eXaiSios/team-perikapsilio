@@ -112,6 +112,7 @@ collections:
             fields:
               - { label: "Username", name: "username", widget: "string", required: true }
               - { label: "Real Name", name: "realName", widget: "string", required: false }
+              - { label: "Photo / Avatar", name: "image", widget: "image", required: false }
               - label: "Role"
                 name: "role"
                 widget: "select"
@@ -150,5 +151,6 @@ collections:
             fields:
               - { label: "Name", name: "name", widget: "string", required: true }
               - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Photo / Avatar", name: "image", widget: "image", required: false }
               - { label: "Bio", name: "bio", widget: "text", required: false }
               - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }

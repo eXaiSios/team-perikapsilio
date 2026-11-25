@@ -57,6 +57,13 @@
   background: rgba(255,0,170,0.08);
   position: relative;
   z-index: 1;
+  overflow: hidden;
+}
+.board-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .board-initials {
   font-family: 'Press Start 2P', monospace;
@@ -254,14 +261,17 @@
     const a = item.attributes;
     // Generate initials from name
     const initials = (a.name || '??').split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+    const avatarHtml = a.image
+      ? `<img class="board-avatar-img" src="${PERI.escapeHtml(PERI.resolveMediaUrl(a.image))}" alt="${PERI.escapeHtml(a.name || 'Director')}" loading="lazy">`
+      : `<span class="board-initials">${initials}</span>`;
     return `
       <article class="board-card">
         <div class="board-avatar">
-          <span class="board-initials">${initials}</span>
+          ${avatarHtml}
         </div>
-        <span class="board-title-badge">${a.title || 'DIRECTOR'}</span>
-        <p class="board-name">${a.name || ''}</p>
-        <p class="board-bio vt">${a.bio || ''}</p>
+        <span class="board-title-badge">${PERI.escapeHtml(a.title || 'DIRECTOR')}</span>
+        <p class="board-name">${PERI.escapeHtml(a.name || '')}</p>
+        <p class="board-bio vt">${PERI.escapeHtml(a.bio || '')}</p>
       </article>`;
   }
 
@@ -297,9 +307,12 @@
   function renderMemberCard(item, index) {
     const a = item.attributes;
     const gameColor = a.game === 'CS2' ? 'var(--accent)' : a.game === 'VALORANT' ? 'var(--accent2)' : 'var(--accent3)';
+    const avatarHtml = a.image
+      ? `<img class="member-avatar-img" src="${PERI.escapeHtml(PERI.resolveMediaUrl(a.image))}" alt="${PERI.escapeHtml(a.username || 'Player')}" loading="lazy">`
+      : makePixelAvatar(index);
     return `
       <article class="member-card">
-        <div class="member-avatar">${makePixelAvatar(index)}</div>
+        <div class="member-avatar${a.image ? ' has-img' : ''}">${avatarHtml}</div>
         <p class="member-name">${PERI.escapeHtml(a.username || 'PLAYER')}</p>
         <span class="member-role" style="border-color:${gameColor};color:${gameColor}">${PERI.escapeHtml(a.role || 'PLAYER')}</span>
         <p class="member-game vt">${PERI.escapeHtml(a.game || '')} ${a.realName ? '· ' + PERI.escapeHtml(a.realName) : ''}</p>
