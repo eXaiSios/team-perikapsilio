@@ -129,28 +129,6 @@ collections:
                     default: "Instagram"
                   - { label: "URL", name: "url", widget: "string", required: true }
 
-      - file: "data/tags.json"
-        label: "Tags & Filters"
-        name: "tags"
-        format: "json"
-        fields:
-          - label: "Players & Staff Game Tags"
-            name: "gameTags"
-            widget: "list"
-            required: false
-            min: 0
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "Tag Name", name: "name", widget: "string", required: true }
-          - label: "Events Filter Tags"
-            name: "eventTags"
-            widget: "list"
-            required: false
-            min: 0
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "Tag Name", name: "name", widget: "string", required: true }
-
       - file: "data/board.json"
         label: "Board of Directors"
         name: "board"
