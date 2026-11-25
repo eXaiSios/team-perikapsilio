@@ -678,9 +678,24 @@ ul { list-style: none; }
   letter-spacing: 0.05em;
 }
 .member-game { font-size: 1rem; color: var(--text-dim); }
-.member-socials { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.75rem; }
-.member-social { font-size: 0.85rem; color: var(--text-dim); }
-.member-social:hover { color: var(--accent); }
+.member-socials { display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap; margin-top: 0.9rem; }
+.member-social {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text-dim);
+  transition: color 0.15s, border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.member-social:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: translateY(-2px);
+  box-shadow: 2px 2px 0 var(--accent);
+}
 
 /* ── CONTACT PAGE ── */
 .contact-layout {

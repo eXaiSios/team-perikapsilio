@@ -5,7 +5,12 @@
       "realName": "Alexandros P.",
       "role": "IGL",
       "game": "CS2",
-      "order": 1
+      "order": 1,
+      "socials": [
+        { "platform": "Instagram", "url": "https://instagram.com" },
+        { "platform": "Twitch", "url": "https://twitch.tv" },
+        { "platform": "Steam", "url": "https://steamcommunity.com" }
+      ]
     },
     {
       "username": "ARTEMIS",

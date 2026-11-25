@@ -99,6 +99,18 @@ collections:
                 options: ["CS2", "VALORANT", "FIFA"]
                 default: "CS2"
               - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }
+              - label: "Social Media"
+                name: "socials"
+                widget: "list"
+                required: false
+                summary: "{{fields.platform}}"
+                fields:
+                  - label: "Platform"
+                    name: "platform"
+                    widget: "select"
+                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "Steam", "Kick", "Website"]
+                    default: "Instagram"
+                  - { label: "URL", name: "url", widget: "string", required: true }
 
       - file: "data/board.json"
         label: "Board of Directors"
