@@ -357,8 +357,8 @@ ul { list-style: none; }
 #home-tournaments .card,
 #home-news .card,
 #home-highlights .card {
-  flex: 1 1 280px;
-  max-width: 380px;
+  flex: 1 1 240px;
+  max-width: 280px;
 }
 #home-highlights .card {
   text-align: center;
