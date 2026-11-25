@@ -1106,7 +1106,9 @@ ul { list-style: none; }
   /* ── Cards / Grids ── */
   .cards-grid,
   .news-grid { grid-template-columns: 1fr; }
-  #home-highlights .card { max-width: 100%; flex: 1 1 100%; }
+  #home-highlights { padding-left: 1.5rem; padding-right: 1.5rem; }
+  #home-highlights .cards-grid { gap: 0.9rem; }
+  #home-highlights .card { max-width: 420px; flex: 1 1 100%; width: 100%; }
   .card { padding: 1.25rem; }
   .card-title { font-size: 0.55rem; }
   .card-desc { font-size: 1.1rem; }
