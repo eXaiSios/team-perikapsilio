@@ -346,7 +346,8 @@ ul { list-style: none; }
 }
 #home-events,
 #home-tournaments,
-#home-news {
+#home-news,
+#home-highlights .cards-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -354,9 +355,48 @@ ul { list-style: none; }
 }
 #home-events .card,
 #home-tournaments .card,
-#home-news .card {
+#home-news .card,
+#home-highlights .card {
   flex: 1 1 280px;
   max-width: 380px;
+}
+#home-highlights .card {
+  text-align: center;
+  align-items: center;
+}
+
+/* ── HOME CTA BOX ── */
+.cta-box {
+  max-width: 860px;
+  margin: 0 auto;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.14) 0%, transparent 65%),
+    linear-gradient(180deg, var(--bg-card) 0%, #0b0b22 100%);
+  border: 2px solid var(--accent);
+  padding: 3.5rem 2rem;
+  box-shadow: 6px 6px 0 var(--accent2), 0 0 32px rgba(0, 229, 255, 0.12);
+}
+.cta-box::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+}
+.cta-desc {
+  font-size: clamp(1.15rem, 2vw, 1.35rem);
+  color: var(--text);
+  max-width: 560px;
+  margin: 0 auto 2rem;
+  line-height: 1.6;
+}
+@media (max-width: 640px) {
+  .cta-box { padding: 2.25rem 1.25rem; }
 }
 #home-events .empty-state,
 #home-tournaments .empty-state,
