@@ -18,6 +18,8 @@ collections:
           - label: "Events"
             name: "items"
             widget: "list"
+            required: false
+            min: 0
             summary: "{{fields.title}} ({{fields.type}})"
             fields:
               - { label: "Title", name: "title", widget: "string", required: true }
@@ -39,6 +41,8 @@ collections:
           - label: "Tournaments"
             name: "items"
             widget: "list"
+            required: false
+            min: 0
             summary: "{{fields.name}} — {{fields.status}}"
             fields:
               - { label: "Name", name: "name", widget: "string", required: true }
@@ -63,6 +67,8 @@ collections:
           - label: "News Posts"
             name: "items"
             widget: "list"
+            required: false
+            min: 0
             summary: "{{fields.title}} ({{fields.category}})"
             fields:
               - { label: "Title", name: "title", widget: "string", required: true }
@@ -84,6 +90,8 @@ collections:
           - label: "Members"
             name: "items"
             widget: "list"
+            required: false
+            min: 0
             summary: "{{fields.username}} ({{fields.game}} — {{fields.role}})"
             fields:
               - { label: "Username", name: "username", widget: "string", required: true }
@@ -120,6 +128,8 @@ collections:
           - label: "Board Members"
             name: "items"
             widget: "list"
+            required: false
+            min: 0
             summary: "{{fields.name}} — {{fields.title}}"
             fields:
               - { label: "Name", name: "name", widget: "string", required: true }

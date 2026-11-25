@@ -25,7 +25,7 @@ const API = (() => {
       const res = await fetch(`${DATA_BASE}${name}.json`, { cache: 'no-cache' });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const json = await res.json();
-      const rawItems = Array.isArray(json) ? json : (json.items || json.data || []);
+      const rawItems = Array.isArray(json) ? json : ((json && (json.items || json.data)) || []);
       const normalized = rawItems.map((item, idx) => {
         if (item && item.attributes) return item;
         const { id, ...attrs } = item;
