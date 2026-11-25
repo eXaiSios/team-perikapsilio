@@ -35,50 +35,16 @@
 
 <main>
   <section class="section">
-
-    <div class="filter-bar">
-      <span class="filter-label">STATUS:</span>
-      <button class="filter-btn active" data-filter="">ALL</button>
-      <button class="filter-btn" data-filter="ACTIVE">ACTIVE</button>
-      <button class="filter-btn" data-filter="UPCOMING">UPCOMING</button>
-      <button class="filter-btn" data-filter="COMPLETED">COMPLETED</button>
-      <input class="search-input" id="tourney-search" type="text" placeholder="SEARCH TOURNAMENTS...">
-    </div>
-
-    <!-- ACTIVE TOURNAMENTS -->
-    <div id="active-section">
-      <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--accent3)">⚡ ACTIVE NOW</h2>
-      </div>
-      <div class="cards-grid" id="active-grid">
-        <div class="card-loading press">LOADING...</div>
+    <div class="empty-state" style="max-width:680px;margin:0 auto;padding:3.5rem 2rem;border-color:var(--accent2)">
+      <span class="press" style="font-size:0.85rem;color:var(--accent2);margin-bottom:1rem">🏆 COMING SOON</span>
+      <p class="vt" style="font-size:1.35rem;color:var(--text);margin-bottom:2rem">
+        Our competitive tournament brackets and season updates are currently being prepared. Check back soon or explore our upcoming events!
+      </p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="../events/" class="btn btn-primary press">VIEW EVENTS →</a>
+        <a href="../" class="btn btn-ghost press">← BACK HOME</a>
       </div>
     </div>
-
-    <div style="margin:3rem 0;border-top:1px solid var(--border)"></div>
-
-    <!-- UPCOMING TOURNAMENTS -->
-    <div id="upcoming-section">
-      <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--accent2)">◉ UPCOMING</h2>
-      </div>
-      <div class="cards-grid" id="upcoming-grid">
-        <div class="card-loading press">LOADING...</div>
-      </div>
-    </div>
-
-    <div style="margin:3rem 0;border-top:1px solid var(--border)"></div>
-
-    <!-- COMPLETED TOURNAMENTS -->
-    <div id="completed-section">
-      <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--text-dim)">✓ COMPLETED</h2>
-      </div>
-      <div class="cards-grid" id="completed-grid">
-        <div class="card-loading press">LOADING...</div>
-      </div>
-    </div>
-
   </section>
 </main>
 

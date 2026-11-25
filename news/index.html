@@ -35,27 +35,16 @@
 
 <main>
   <section class="section">
-
-    <div class="filter-bar">
-      <span class="filter-label">CATEGORY:</span>
-      <button class="filter-btn active" data-filter="">ALL</button>
-      <button class="filter-btn" data-filter="ACHIEVEMENT">ACHIEVEMENT</button>
-      <button class="filter-btn" data-filter="TEAM">TEAM</button>
-      <button class="filter-btn" data-filter="EVENT">EVENT</button>
-      <button class="filter-btn" data-filter="ANNOUNCEMENT">ANNOUNCEMENT</button>
-      <input class="search-input" id="news-search" type="text" placeholder="SEARCH NEWS...">
+    <div class="empty-state" style="max-width:680px;margin:0 auto;padding:3.5rem 2rem;border-color:var(--accent3)">
+      <span class="press" style="font-size:0.85rem;color:var(--accent3);margin-bottom:1rem">📰 COMING SOON</span>
+      <p class="vt" style="font-size:1.35rem;color:var(--text);margin-bottom:2rem">
+        News, match recaps, and team announcements will be published here soon. In the meantime, check out our upcoming events!
+      </p>
+      <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+        <a href="../events/" class="btn btn-primary press">VIEW EVENTS →</a>
+        <a href="../" class="btn btn-ghost press">← BACK HOME</a>
+      </div>
     </div>
-
-    <!-- Featured article -->
-    <div id="news-featured"></div>
-
-    <!-- Grid -->
-    <div class="news-grid" id="news-grid" style="margin-top:2rem">
-      <div class="card-loading press">LOADING...</div>
-    </div>
-
-    <div class="pagination" id="news-pagination"></div>
-
   </section>
 </main>
 
