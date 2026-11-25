@@ -50,7 +50,7 @@ Edit any file in `data/` (`events.json`, `tournaments.json`, `news.json`, `membe
 
 ## Contact Form
 
-By default (with no backend server required), submitting the contact form opens the visitor's email client pre-filled to `hello@perikapsilio.gr`.
+By default (with no backend server required), submitting the contact form opens the visitor's email client pre-filled to `team-perikapsilio@csd.uoc.gr`.
 
 If you want silent form submissions (e.g. via Formspree or Web3Forms), set `window.CONTACT_ENDPOINT` before loading `api.js` in `contact/index.html`:
 

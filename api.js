@@ -186,7 +186,7 @@ const API = (() => {
     const subjectLabel = data.subject ? `[${data.subject.toUpperCase()}] ` : '';
     const subject = encodeURIComponent(`${subjectLabel}Contact from ${data.name}`);
     const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
-    window.location.href = `mailto:hello@perikapsilio.gr?subject=${subject}&body=${body}`;
+    window.location.href = `mailto:team-perikapsilio@csd.uoc.gr?subject=${subject}&body=${body}`;
     return { fallback: true };
   }
 
