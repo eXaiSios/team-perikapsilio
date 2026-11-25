@@ -19,7 +19,12 @@
       "image": "",
       "bio": "Handles partnerships, sponsorships, and represents the team at official events.",
       "order": 2,
-      "socials": []
+      "socials": [
+        {
+          "platform": "Instagram",
+          "url": "c"
+        }
+      ]
     },
     {
       "name": "Tatiana Christoforidou",
