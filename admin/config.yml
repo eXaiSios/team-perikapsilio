@@ -154,3 +154,15 @@ collections:
               - { label: "Photo / Avatar", name: "image", widget: "image", required: false }
               - { label: "Bio", name: "bio", widget: "text", required: false }
               - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }
+              - label: "Social Media"
+                name: "socials"
+                widget: "list"
+                required: false
+                summary: "{{fields.platform}}"
+                fields:
+                  - label: "Platform"
+                    name: "platform"
+                    widget: "select"
+                    options: ["Instagram", "Discord", "TikTok", "Twitch", "YouTube", "X / Twitter", "Steam", "Kick", "Website"]
+                    default: "Instagram"
+                  - { label: "URL", name: "url", widget: "string", required: true }

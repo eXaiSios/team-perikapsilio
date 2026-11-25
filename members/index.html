@@ -272,6 +272,7 @@
         <span class="board-title-badge">${PERI.escapeHtml(a.title || 'DIRECTOR')}</span>
         <p class="board-name">${PERI.escapeHtml(a.name || '')}</p>
         <p class="board-bio vt">${PERI.escapeHtml(a.bio || '')}</p>
+        ${renderMemberSocials(a.socials)}
       </article>`;
   }
 
