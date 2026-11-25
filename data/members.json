@@ -1,3 +1,12 @@
 {
-  "items": []
+  "items": [
+    {
+      "username": "v",
+      "realName": "v",
+      "role": "RIFLER",
+      "game": "CS2",
+      "order": 1,
+      "socials": []
+    }
+  ]
 }
