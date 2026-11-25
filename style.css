@@ -937,71 +937,21 @@ ul { list-style: none; }
   *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
 }
 
-/* ── DETAIL MODAL ── */
-.peri-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 2000;
-  background: rgba(5, 5, 16, 0.88);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  backdrop-filter: blur(4px);
+/* ── ARTICLE DETAIL PAGE ── */
+.article-detail {
+  background: linear-gradient(180deg, var(--bg-card) 0%, #0d0d26 100%);
+  border: 2px solid var(--border);
+  padding: 2.5rem;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.7);
 }
-.peri-modal {
-  background: linear-gradient(180deg, var(--bg-card) 0%, #0b0b22 100%);
-  border: 2px solid var(--accent);
-  max-width: 720px;
-  width: 100%;
-  max-height: 85vh;
-  overflow-y: auto;
-  padding: 2rem;
-  position: relative;
-  box-shadow: 8px 8px 0 var(--accent2), 0 0 40px rgba(0, 229, 255, 0.22);
-  animation: modalPop 0.18s ease-out;
+.article-back {
+  margin-bottom: 2rem;
 }
-@keyframes modalPop {
-  from { opacity: 0; transform: scale(0.96) translateY(8px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+.article-detail .article-body {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-top: 1.5rem;
 }
-.peri-modal-close {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-dim);
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.6rem;
-  padding: 0.4rem 0.6rem;
-  cursor: pointer;
+@media (max-width: 640px) {
+  .article-detail { padding: 1.5rem; }
 }
-.peri-modal-close:hover {
-  border-color: var(--accent2);
-  color: var(--accent2);
-}
-.peri-modal-title {
-  font-family: 'Press Start 2P', monospace;
-  font-size: clamp(0.65rem, 2vw, 1rem);
-  color: var(--text-bright);
-  line-height: 1.8;
-  margin: 0.75rem 0 1rem;
-  padding-right: 2.5rem;
-}
-.peri-modal-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border);
-  font-size: 1.05rem;
-  color: var(--text-dim);
-}
-.peri-modal-body {
-  font-size: 1.25rem;
-  line-height: 1.7;
-  color: var(--text);
-}
-.peri-modal-body p { margin-bottom: 1rem; }

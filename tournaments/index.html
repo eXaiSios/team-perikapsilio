@@ -158,35 +158,53 @@
     PERI.initScrollReveal();
   }
 
-  function openFromHash() {
-    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!hash || !allData.length) return;
-    const item = allData.find(i => (i.attributes.slug || String(i.id)) === hash);
-    if (!item) return;
+  function getRequestedSlug() {
+    const q = new URLSearchParams(location.search).get('slug');
+    if (q) return q;
+    return decodeURIComponent(location.hash.replace(/^#/, ''));
+  }
+
+  function renderTournamentDetail(item) {
     const a = item.attributes;
     const status = (a.status || 'UPCOMING').toUpperCase();
     const statusColor = status === 'ACTIVE' ? 'var(--accent3)' : status === 'COMPLETED' ? 'var(--text-dim)' : 'var(--accent2)';
-    PERI.openModal({
-      badge: status,
-      badgeColor: statusColor,
-      title: a.name,
-      meta: [
-        `🎮 ${PERI.escapeHtml(a.game || 'TBA')}`,
-        `🏆 ${PERI.escapeHtml(a.prize || 'TBA')}`,
-        `💻 ${PERI.escapeHtml(a.platform || 'PC')}`,
-        `📅 ${PERI.formatDate(a.startDate)} – ${PERI.formatDate(a.endDate)}`
-      ],
-      body: a.description || `${a.name} — ${a.game || ''} (${a.platform || 'PC'}).`
-    });
+    const section = document.querySelector('main .section');
+    document.title = `${a.name} — Team Perikapsilio`;
+    section.innerHTML = `
+      <div class="article-back">
+        <a href="./" class="btn btn-ghost press">← BACK TO TOURNAMENTS</a>
+      </div>
+      <article class="article-detail" style="border-color:var(--accent2)">
+        <div class="article-header">
+          <span class="card-badge" style="background:${statusColor}">${PERI.escapeHtml(status)}</span>
+          <h1 class="article-title">${PERI.escapeHtml(a.name)}</h1>
+          <div class="article-meta vt">
+            <span>🎮 ${PERI.escapeHtml(a.game || 'TBA')}</span>
+            <span>🏆 ${PERI.escapeHtml(a.prize || 'TBA')}</span>
+            <span>💻 ${PERI.escapeHtml(a.platform || 'PC')}</span>
+            <span>📅 ${PERI.formatDate(a.startDate)} – ${PERI.formatDate(a.endDate)}</span>
+          </div>
+        </div>
+        <div class="article-body vt">
+          ${PERI.formatRichText(a.description || `${a.name} — ${a.game || ''} (${a.platform || 'PC'}).`)}
+        </div>
+      </article>
+    `;
   }
 
-  window.addEventListener('hashchange', openFromHash);
-
   async function loadAll() {
+    const requestedSlug = getRequestedSlug();
+    if (requestedSlug) {
+      const item = await API.getTournament(requestedSlug);
+      if (item) {
+        renderTournamentDetail(item);
+        return;
+      }
+    }
+
     const data = await API.getTournaments({ pageSize: 100 });
     allData = data ? data.data : [];
     applyFilters();
-    openFromHash();
   }
 
   // Search

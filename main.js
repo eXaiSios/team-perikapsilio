@@ -107,46 +107,12 @@ function formatDate(dateStr) {
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 }
 
-// ── DETAIL MODAL ──
-function closeModal() {
-  const existing = document.getElementById('peri-modal-backdrop');
-  if (existing) existing.remove();
-  if (location.hash) {
-    history.replaceState(null, '', location.pathname + location.search);
-  }
-}
-
-function openModal({ badge = '', badgeColor = 'var(--accent)', title = '', meta = [], body = '' }) {
-  closeModal();
-  const backdrop = document.createElement('div');
-  backdrop.id = 'peri-modal-backdrop';
-  backdrop.className = 'peri-modal-backdrop';
-  backdrop.innerHTML = `
-    <div class="peri-modal" role="dialog" aria-modal="true">
-      <button class="peri-modal-close" aria-label="Close modal">✕</button>
-      ${badge ? `<span class="card-badge" style="background:${badgeColor}">${escapeHtml(badge)}</span>` : ''}
-      <h2 class="peri-modal-title">${escapeHtml(title)}</h2>
-      ${meta.length ? `<div class="peri-modal-meta">${meta.map(m => `<span>${m}</span>`).join('')}</div>` : ''}
-      <div class="peri-modal-body vt">${formatRichText(body) || '<p>No additional details available.</p>'}</div>
-    </div>
-  `;
-  backdrop.addEventListener('click', (e) => {
-    if (e.target === backdrop) closeModal();
-  });
-  backdrop.querySelector('.peri-modal-close').addEventListener('click', closeModal);
-  document.body.appendChild(backdrop);
-}
-
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') closeModal();
-});
-
 // ── RENDER HELPERS ──
 function renderEventCard(item) {
   const a = item.attributes;
   const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-event" onclick="window.location='${SITE_BASE}events/#${slug}'">
+    <article class="card card-event" onclick="window.location='${SITE_BASE}events/?slug=${slug}'">
       <span class="card-badge">${escapeHtml(a.type || 'EVENT')}</span>
       <h3 class="card-title">${escapeHtml(a.title)}</h3>
       <p class="card-meta"><span class="icon">📅</span> ${formatDate(a.date)}</p>
@@ -162,7 +128,7 @@ function renderTournamentCard(item) {
   const statusColor = status === 'ACTIVE' ? 'var(--accent3)' : status === 'COMPLETED' ? 'var(--text-dim)' : 'var(--accent2)';
   const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-tourney" onclick="window.location='${SITE_BASE}tournaments/#${slug}'">
+    <article class="card card-tourney" onclick="window.location='${SITE_BASE}tournaments/?slug=${slug}'">
       <span class="card-badge" style="background:${statusColor}">${escapeHtml(status)}</span>
       <h3 class="card-title">${escapeHtml(a.name)}</h3>
       <p class="card-meta"><span class="icon">🎮</span> ${escapeHtml(a.game || 'TBA')}</p>
@@ -176,7 +142,7 @@ function renderNewsCard(item) {
   const a = item.attributes;
   const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-news" onclick="window.location='${SITE_BASE}news/#${slug}'">
+    <article class="card card-news" onclick="window.location='${SITE_BASE}news/?slug=${slug}'">
       <span class="card-badge">${escapeHtml(a.category || 'NEWS')}</span>
       <h3 class="card-title">${escapeHtml(a.title)}</h3>
       <p class="card-meta"><span class="icon">📰</span> ${formatDate(a.publishedAt)}</p>
@@ -256,9 +222,8 @@ document.addEventListener('DOMContentLoaded', () => {
 window.PERI = {
   SITE_BASE,
   escapeHtml,
+  formatRichText,
   formatDate,
-  openModal,
-  closeModal,
   renderEventCard,
   renderTournamentCard,
   renderNewsCard,

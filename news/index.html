@@ -97,9 +97,46 @@
   const PAGE_SIZE = 9;
   let firstLoad = true;
 
-  let allNewsCache = [];
+  function getRequestedSlug() {
+    const q = new URLSearchParams(location.search).get('slug');
+    if (q) return q;
+    return decodeURIComponent(location.hash.replace(/^#/, ''));
+  }
+
+  function renderArticleDetail(item) {
+    const a = item.attributes;
+    const section = document.querySelector('main .section');
+    document.title = `${a.title} — Team Perikapsilio`;
+    section.innerHTML = `
+      <div class="article-back">
+        <a href="./" class="btn btn-ghost press">← BACK TO NEWS</a>
+      </div>
+      <article class="article-detail">
+        <div class="article-header">
+          <span class="card-badge" style="background:var(--accent3);color:#000">${PERI.escapeHtml(a.category || 'NEWS')}</span>
+          <h1 class="article-title">${PERI.escapeHtml(a.title)}</h1>
+          <div class="article-meta vt">
+            <span>📰 ${PERI.formatDate(a.publishedAt)}</span>
+          </div>
+        </div>
+        ${a.summary ? `<p class="vt" style="font-size:1.35rem;color:var(--text-bright);line-height:1.6">${PERI.escapeHtml(a.summary)}</p>` : ''}
+        <div class="article-body vt">
+          ${PERI.formatRichText(a.body || a.summary || 'No article content available.')}
+        </div>
+      </article>
+    `;
+  }
 
   async function loadNews() {
+    const requestedSlug = getRequestedSlug();
+    if (requestedSlug) {
+      const item = await API.getNewsArticle(requestedSlug);
+      if (item) {
+        renderArticleDetail(item);
+        return;
+      }
+    }
+
     const grid = document.getElementById('news-grid');
     const featured = document.getElementById('news-featured');
     grid.innerHTML = '<div class="card-loading press">LOADING...</div>';
@@ -116,7 +153,6 @@
       search: searchTerm
     });
     let items = data ? data.data : [];
-    if (items.length) allNewsCache = items;
 
     if (!items.length) {
       grid.innerHTML = PERI.renderEmpty('NO NEWS FOUND');
@@ -131,7 +167,7 @@
       const a = top.attributes;
       const slug = encodeURIComponent(a.slug || top.id);
       featured.innerHTML = `
-        <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location.hash='#${slug}'">
+        <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location='?slug=${slug}'">
           <span class="card-badge" style="background:var(--accent3);color:#000">★ FEATURED — ${PERI.escapeHtml(a.category || 'NEWS')}</span>
           <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${PERI.escapeHtml(a.title)}</h2>
           <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)}</p>
@@ -149,29 +185,7 @@
 
     const meta = data && data.meta ? data.meta.pagination : { pageCount: 1, page: 1 };
     renderPagination(meta);
-    openFromHash();
   }
-
-  async function openFromHash() {
-    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!hash) return;
-    let item = allNewsCache.find(i => (i.attributes.slug || String(i.id)) === hash);
-    if (!item) {
-      const all = await API.getNews({ pageSize: 100 });
-      item = (all && all.data || []).find(i => (i.attributes.slug || String(i.id)) === hash);
-    }
-    if (!item) return;
-    const a = item.attributes;
-    PERI.openModal({
-      badge: a.category || 'NEWS',
-      badgeColor: 'var(--accent3)',
-      title: a.title,
-      meta: [`📰 ${PERI.formatDate(a.publishedAt)}`],
-      body: a.body || a.summary || ''
-    });
-  }
-
-  window.addEventListener('hashchange', openFromHash);
 
   function renderPagination(meta) {
     const container = document.getElementById('news-pagination');

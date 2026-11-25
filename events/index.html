@@ -92,9 +92,46 @@
   let searchTerm = '';
   const PAGE_SIZE = 9;
 
-  let allEventsCache = [];
+  function getRequestedSlug() {
+    const q = new URLSearchParams(location.search).get('slug');
+    if (q) return q;
+    return decodeURIComponent(location.hash.replace(/^#/, ''));
+  }
+
+  function renderEventDetail(item) {
+    const a = item.attributes;
+    const section = document.querySelector('main .section');
+    document.title = `${a.title} — Team Perikapsilio`;
+    section.innerHTML = `
+      <div class="article-back">
+        <a href="./" class="btn btn-ghost press">← BACK TO EVENTS</a>
+      </div>
+      <article class="article-detail" style="border-color:var(--accent)">
+        <div class="article-header">
+          <span class="card-badge">${PERI.escapeHtml(a.type || 'EVENT')}</span>
+          <h1 class="article-title">${PERI.escapeHtml(a.title)}</h1>
+          <div class="article-meta vt">
+            <span>📅 ${PERI.formatDate(a.date)}</span>
+            <span>📍 ${PERI.escapeHtml(a.location || 'TBA')}</span>
+          </div>
+        </div>
+        <div class="article-body vt">
+          ${PERI.formatRichText(a.description || 'No additional details available.')}
+        </div>
+      </article>
+    `;
+  }
 
   async function loadEvents() {
+    const requestedSlug = getRequestedSlug();
+    if (requestedSlug) {
+      const item = await API.getEvent(requestedSlug);
+      if (item) {
+        renderEventDetail(item);
+        return;
+      }
+    }
+
     const grid = document.getElementById('events-grid');
     grid.innerHTML = '<div class="card-loading press">LOADING...</div>';
 
@@ -111,7 +148,6 @@
     });
 
     const items = data ? data.data : [];
-    if (items.length) allEventsCache = items;
 
     if (!items.length) {
       grid.innerHTML = PERI.renderEmpty('NO EVENTS FOUND');
@@ -125,32 +161,7 @@
     // Pagination
     const meta = data && data.meta ? data.meta.pagination : { pageCount: 1, page: 1 };
     renderPagination(meta);
-    openFromHash();
   }
-
-  async function openFromHash() {
-    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
-    if (!hash) return;
-    let item = allEventsCache.find(i => (i.attributes.slug || String(i.id)) === hash);
-    if (!item) {
-      const all = await API.getEvents({ pageSize: 100 });
-      item = (all && all.data || []).find(i => (i.attributes.slug || String(i.id)) === hash);
-    }
-    if (!item) return;
-    const a = item.attributes;
-    PERI.openModal({
-      badge: a.type || 'EVENT',
-      badgeColor: 'var(--accent)',
-      title: a.title,
-      meta: [
-        `📅 ${PERI.formatDate(a.date)}`,
-        `📍 ${PERI.escapeHtml(a.location || 'TBA')}`
-      ],
-      body: a.description || ''
-    });
-  }
-
-  window.addEventListener('hashchange', openFromHash);
 
   function renderPagination(meta) {
     const container = document.getElementById('events-pagination');
