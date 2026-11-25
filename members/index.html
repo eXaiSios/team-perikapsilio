@@ -116,16 +116,16 @@
 <div class="scanlines" aria-hidden="true"></div>
 
 <nav class="navbar">
-  <a href="index.html" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
+  <a href="../" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="nav-links">
     <li><a href="../" class="nav-link">HOME</a></li>
-    <li><a href="../events" class="nav-link">EVENTS</a></li>
-    <li><a href="../tournaments" class="nav-link">TOURNAMENTS</a></li>
-    <li><a href="../news" class="nav-link">NEWS</a></li>
-    <li><a href="../about" class="nav-link">ABOUT</a></li>
-    <li><a href="" class="nav-link active">MEMBERS</a></li>
-    <li><a href="../contact" class="nav-link">CONTACT</a></li>
+    <li><a href="../events/" class="nav-link">EVENTS</a></li>
+    <li><a href="../tournaments/" class="nav-link">TOURNAMENTS</a></li>
+    <li><a href="../news/" class="nav-link">NEWS</a></li>
+    <li><a href="../about/" class="nav-link">ABOUT</a></li>
+    <li><a href="./" class="nav-link active">MEMBERS</a></li>
+    <li><a href="../contact/" class="nav-link">CONTACT</a></li>
   </ul>
 </nav>
 
@@ -213,7 +213,7 @@
         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-2.88 2.5 2.89 2.89 0 0 1-2.89-2.89 2.89 2.89 0 0 1 2.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 0 0-.79-.05 6.34 6.34 0 0 0-6.34 6.34 6.34 6.34 0 0 0 6.34 6.34 6.34 6.34 0 0 0 6.33-6.34V8.69a8.18 8.18 0 0 0 4.78 1.52V6.76a4.85 4.85 0 0 1-1.01-.07z"/></svg>
       </a>
     </div>
-    <div class="footer-bottom press">© 2025 TEAM PERIKAPSILIO. ALL RIGHTS RESERVED.</div>
+    <div class="footer-bottom press">© 2026 TEAM PERIKAPSILIO. ALL RIGHTS RESERVED.</div>
   </div>
 </footer>
 
@@ -290,11 +290,25 @@
 
   // ── LOAD PLAYERS ──
   let allMembers = [];
+  let activeGame = '';
+  let searchTerm = '';
 
   async function loadMembers() {
     const data = await API.getMembers();
     allMembers = data ? data.data : [];
-    renderMembers(allMembers);
+    applyMemberFilters();
+  }
+
+  function applyMemberFilters() {
+    let filtered = allMembers;
+    if (activeGame) {
+      filtered = filtered.filter(m => (m.attributes.game || '').toUpperCase() === activeGame);
+    }
+    if (searchTerm) {
+      const s = searchTerm.toLowerCase();
+      filtered = filtered.filter(m => JSON.stringify(m.attributes).toLowerCase().includes(s));
+    }
+    renderMembers(filtered);
   }
 
   function renderMembers(items) {
@@ -312,9 +326,8 @@
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
-      const f = btn.dataset.filter.toUpperCase();
-      const filtered = f ? allMembers.filter(m => (m.attributes.game || '').toUpperCase() === f) : allMembers;
-      renderMembers(filtered);
+      activeGame = btn.dataset.filter.toUpperCase();
+      applyMemberFilters();
     });
   });
 
@@ -322,9 +335,8 @@
   document.getElementById('member-search').addEventListener('input', e => {
     clearTimeout(searchTimer);
     searchTimer = setTimeout(() => {
-      const s = e.target.value.toLowerCase();
-      const filtered = s ? allMembers.filter(m => JSON.stringify(m).toLowerCase().includes(s)) : allMembers;
-      renderMembers(filtered);
+      searchTerm = e.target.value.trim();
+      applyMemberFilters();
     }, 300);
   });
 

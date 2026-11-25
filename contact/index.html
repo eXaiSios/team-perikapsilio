@@ -13,16 +13,16 @@
 <div class="scanlines" aria-hidden="true"></div>
 
 <nav class="navbar">
-  <a href="index.html" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
+  <a href="../" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="nav-links">
     <li><a href="../" class="nav-link">HOME</a></li>
-    <li><a href="../events" class="nav-link">EVENTS</a></li>
-    <li><a href="../tournaments" class="nav-link">TOURNAMENTS</a></li>
-    <li><a href="../news" class="nav-link">NEWS</a></li>
-    <li><a href="../about" class="nav-link">ABOUT</a></li>
-    <li><a href="../members" class="nav-link">MEMBERS</a></li>
-    <li><a href="" class="nav-link active">CONTACT</a></li>
+    <li><a href="../events/" class="nav-link">EVENTS</a></li>
+    <li><a href="../tournaments/" class="nav-link">TOURNAMENTS</a></li>
+    <li><a href="../news/" class="nav-link">NEWS</a></li>
+    <li><a href="../about/" class="nav-link">ABOUT</a></li>
+    <li><a href="../members/" class="nav-link">MEMBERS</a></li>
+    <li><a href="./" class="nav-link active">CONTACT</a></li>
   </ul>
 </nav>
 
@@ -135,12 +135,12 @@
       <p class="vt footer-tagline">Forged in pixels. Built for glory.</p>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="events.html" class="footer-link vt">EVENTS</a>
-      <a href="tournaments.html" class="footer-link vt">TOURNAMENTS</a>
-      <a href="news.html" class="footer-link vt">NEWS</a>
-      <a href="about.html" class="footer-link vt">ABOUT</a>
-      <a href="members.html" class="footer-link vt">MEMBERS</a>
-      <a href="contact.html" class="footer-link vt">CONTACT</a>
+      <a href="../events/" class="footer-link vt">EVENTS</a>
+      <a href="../tournaments/" class="footer-link vt">TOURNAMENTS</a>
+      <a href="../news/" class="footer-link vt">NEWS</a>
+      <a href="../about/" class="footer-link vt">ABOUT</a>
+      <a href="../members/" class="footer-link vt">MEMBERS</a>
+      <a href="../contact/" class="footer-link vt">CONTACT</a>
     </nav>
     <div class="footer-social">
       <a href="#" class="social-link" aria-label="Instagram">
@@ -165,6 +165,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const success = document.getElementById('cf-success');
   const error   = document.getElementById('cf-error');
 
+  function showError(msg) {
+    error.textContent = msg;
+    error.classList.add('error');
+    success.classList.remove('success');
+  }
+
+  function showSuccess(msg) {
+    success.textContent = msg;
+    success.classList.add('success');
+    error.classList.remove('error');
+  }
+
   btn.addEventListener('click', async () => {
     const name    = document.getElementById('cf-name').value.trim();
     const email   = document.getElementById('cf-email').value.trim();
@@ -172,9 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const message = document.getElementById('cf-message').value.trim();
 
     if (!name || !email || !message) {
-      error.textContent = '✗ PLEASE FILL IN ALL REQUIRED FIELDS.';
-      error.classList.add('error');
-      success.style.display = 'none';
+      showError('✗ PLEASE FILL IN ALL REQUIRED FIELDS.');
+      return;
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      showError('✗ PLEASE ENTER A VALID EMAIL ADDRESS.');
       return;
     }
 
@@ -187,16 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
     btn.disabled = false;
 
     if (result) {
-      success.style.display = 'block';
-      error.style.display = 'none';
+      showSuccess(
+        result.fallback
+          ? '✓ OPENING YOUR EMAIL CLIENT TO SEND THE MESSAGE...'
+          : "✓ MESSAGE SENT! WE'LL GET BACK TO YOU SOON."
+      );
       document.getElementById('cf-name').value = '';
       document.getElementById('cf-email').value = '';
       document.getElementById('cf-subject').value = '';
       document.getElementById('cf-message').value = '';
     } else {
-      error.textContent = '✗ COULD NOT SEND. CHECK YOUR CONNECTION AND TRY AGAIN.';
-      error.style.display = 'block';
-      success.style.display = 'none';
+      showError('✗ COULD NOT SEND. CHECK YOUR CONNECTION AND TRY AGAIN.');
     }
   });
 });

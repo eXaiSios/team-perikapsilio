@@ -1,0 +1,116 @@
+backend:
+  name: github
+  repo: eXaiSios/team-perikapsilio
+  branch: main
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+collections:
+  - name: "content"
+    label: "Site Content"
+    files:
+      - file: "data/events.json"
+        label: "Events"
+        name: "events"
+        format: "json"
+        fields:
+          - label: "Events"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} ({{fields.type}})"
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Slug", name: "slug", widget: "string", required: true }
+              - { label: "Date", name: "date", widget: "datetime", required: true }
+              - { label: "Location", name: "location", widget: "string", default: "TBA" }
+              - label: "Type"
+                name: "type"
+                widget: "select"
+                options: ["LAN", "WORKSHOP", "SOCIAL", "TOURNAMENT"]
+                default: "LAN"
+              - { label: "Description", name: "description", widget: "text", required: false }
+
+      - file: "data/tournaments.json"
+        label: "Tournaments"
+        name: "tournaments"
+        format: "json"
+        fields:
+          - label: "Tournaments"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.status}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string", required: true }
+              - { label: "Slug", name: "slug", widget: "string", required: true }
+              - { label: "Game", name: "game", widget: "string", required: true }
+              - { label: "Start Date", name: "startDate", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+              - { label: "End Date", name: "endDate", widget: "datetime", format: "YYYY-MM-DD", time_format: false }
+              - label: "Status"
+                name: "status"
+                widget: "select"
+                options: ["ACTIVE", "UPCOMING", "COMPLETED"]
+                default: "UPCOMING"
+              - { label: "Prize", name: "prize", widget: "string", default: "TBA" }
+              - { label: "Platform", name: "platform", widget: "string", default: "PC" }
+              - { label: "Description", name: "description", widget: "text", required: false }
+
+      - file: "data/news.json"
+        label: "News Posts"
+        name: "news"
+        format: "json"
+        fields:
+          - label: "News Posts"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.title}} ({{fields.category}})"
+            fields:
+              - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Slug", name: "slug", widget: "string", required: true }
+              - { label: "Published At", name: "publishedAt", widget: "datetime", required: true }
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                options: ["ACHIEVEMENT", "TEAM", "EVENT", "ANNOUNCEMENT"]
+                default: "ANNOUNCEMENT"
+              - { label: "Summary", name: "summary", widget: "text", required: false }
+              - { label: "Body", name: "body", widget: "text", required: false }
+
+      - file: "data/members.json"
+        label: "Players & Staff"
+        name: "members"
+        format: "json"
+        fields:
+          - label: "Members"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.username}} ({{fields.game}} — {{fields.role}})"
+            fields:
+              - { label: "Username", name: "username", widget: "string", required: true }
+              - { label: "Real Name", name: "realName", widget: "string", required: false }
+              - label: "Role"
+                name: "role"
+                widget: "select"
+                options: ["IGL", "AWP", "RIFLER", "SUPPORT", "DUELIST", "COACH"]
+                default: "RIFLER"
+              - label: "Game"
+                name: "game"
+                widget: "select"
+                options: ["CS2", "VALORANT", "FIFA"]
+                default: "CS2"
+              - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }
+
+      - file: "data/board.json"
+        label: "Board of Directors"
+        name: "board"
+        format: "json"
+        fields:
+          - label: "Board Members"
+            name: "items"
+            widget: "list"
+            summary: "{{fields.name}} — {{fields.title}}"
+            fields:
+              - { label: "Name", name: "name", widget: "string", required: true }
+              - { label: "Title", name: "title", widget: "string", required: true }
+              - { label: "Bio", name: "bio", widget: "text", required: false }
+              - { label: "Display Order", name: "order", widget: "number", value_type: "int", default: 1 }

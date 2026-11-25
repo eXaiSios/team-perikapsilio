@@ -13,16 +13,16 @@
 <div class="scanlines" aria-hidden="true"></div>
 
 <nav class="navbar">
-  <a href="index.html" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
+  <a href="../" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="nav-links">
     <li><a href="../" class="nav-link">HOME</a></li>
-    <li><a href="../events" class="nav-link">EVENTS</a></li>
-    <li><a href="../tournaments" class="nav-link">TOURNAMENTS</a></li>
-    <li><a href="" class="nav-link active">NEWS</a></li>
-    <li><a href="../about" class="nav-link">ABOUT</a></li>
-    <li><a href="../members" class="nav-link">MEMBERS</a></li>
-    <li><a href="../contact" class="nav-link">CONTACT</a></li>
+    <li><a href="../events/" class="nav-link">EVENTS</a></li>
+    <li><a href="../tournaments/" class="nav-link">TOURNAMENTS</a></li>
+    <li><a href="./" class="nav-link active">NEWS</a></li>
+    <li><a href="../about/" class="nav-link">ABOUT</a></li>
+    <li><a href="../members/" class="nav-link">MEMBERS</a></li>
+    <li><a href="../contact/" class="nav-link">CONTACT</a></li>
   </ul>
 </nav>
 
@@ -65,12 +65,12 @@
       <p class="vt footer-tagline">Forged in pixels. Built for glory.</p>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="../events" class="footer-link vt">EVENTS</a>
-      <a href="../tournaments" class="footer-link vt">TOURNAMENTS</a>
-      <a href="../news" class="footer-link vt">NEWS</a>
-      <a href="../.about" class="footer-link vt">ABOUT</a>
-      <a href="../members" class="footer-link vt">MEMBERS</a>
-      <a href="../contact" class="footer-link vt">CONTACT</a>
+      <a href="../events/" class="footer-link vt">EVENTS</a>
+      <a href="../tournaments/" class="footer-link vt">TOURNAMENTS</a>
+      <a href="../news/" class="footer-link vt">NEWS</a>
+      <a href="../about/" class="footer-link vt">ABOUT</a>
+      <a href="../members/" class="footer-link vt">MEMBERS</a>
+      <a href="../contact/" class="footer-link vt">CONTACT</a>
     </nav>
     <div class="footer-social">
       <a href="#" class="social-link" aria-label="Instagram">
@@ -97,6 +97,8 @@
   const PAGE_SIZE = 9;
   let firstLoad = true;
 
+  let allNewsCache = [];
+
   async function loadNews() {
     const grid = document.getElementById('news-grid');
     const featured = document.getElementById('news-featured');
@@ -105,16 +107,16 @@
     let filters = '';
     if (currentFilter) filters = `filters[category][$eq]=${currentFilter}`;
 
-    const data = await API.getNews({ page: currentPage, pageSize: PAGE_SIZE, sort: 'publishedAt:desc', filters });
+    const data = await API.getNews({
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      sort: 'publishedAt:desc',
+      filters,
+      category: currentFilter,
+      search: searchTerm
+    });
     let items = data ? data.data : [];
-
-    if (searchTerm) {
-      const s = searchTerm.toLowerCase();
-      items = items.filter(i => JSON.stringify(i).toLowerCase().includes(s));
-    }
-    if (currentFilter) {
-      items = items.filter(i => (i.attributes.category || '').toUpperCase() === currentFilter);
-    }
+    if (items.length) allNewsCache = items;
 
     if (!items.length) {
       grid.innerHTML = PERI.renderEmpty('NO NEWS FOUND');
@@ -127,12 +129,13 @@
     if (firstLoad && items.length > 0 && featured) {
       const top = items[0];
       const a = top.attributes;
+      const slug = encodeURIComponent(a.slug || top.id);
       featured.innerHTML = `
-        <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location='news.html#${a.slug || top.id}'">
-          <span class="card-badge" style="background:var(--accent3);color:#000">★ FEATURED — ${a.category || 'NEWS'}</span>
-          <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${a.title}</h2>
+        <article class="card card-news" style="grid-column:1/-1;display:flex;flex-direction:column;gap:0.5rem;border-color:var(--accent3);cursor:pointer" onclick="window.location.hash='#${slug}'">
+          <span class="card-badge" style="background:var(--accent3);color:#000">★ FEATURED — ${PERI.escapeHtml(a.category || 'NEWS')}</span>
+          <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${PERI.escapeHtml(a.title)}</h2>
           <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)}</p>
-          <p class="card-desc vt" style="font-size:1.2rem">${a.summary || ''}</p>
+          <p class="card-desc vt" style="font-size:1.2rem">${PERI.escapeHtml(a.summary || '')}</p>
           <span class="card-link press">READ FULL ARTICLE →</span>
         </article>`;
       items = items.slice(1);
@@ -144,9 +147,31 @@
     grid.innerHTML = items.map(PERI.renderNewsCard).join('');
     PERI.initScrollReveal();
 
-    const meta = data ? data.meta.pagination : { pageCount: 1, page: 1 };
+    const meta = data && data.meta ? data.meta.pagination : { pageCount: 1, page: 1 };
     renderPagination(meta);
+    openFromHash();
   }
+
+  async function openFromHash() {
+    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+    if (!hash) return;
+    let item = allNewsCache.find(i => (i.attributes.slug || String(i.id)) === hash);
+    if (!item) {
+      const all = await API.getNews({ pageSize: 100 });
+      item = (all && all.data || []).find(i => (i.attributes.slug || String(i.id)) === hash);
+    }
+    if (!item) return;
+    const a = item.attributes;
+    PERI.openModal({
+      badge: a.category || 'NEWS',
+      badgeColor: 'var(--accent3)',
+      title: a.title,
+      meta: [`📰 ${PERI.formatDate(a.publishedAt)}`],
+      body: a.body || a.summary || ''
+    });
+  }
+
+  window.addEventListener('hashchange', openFromHash);
 
   function renderPagination(meta) {
     const container = document.getElementById('news-pagination');

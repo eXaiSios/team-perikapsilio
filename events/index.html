@@ -13,16 +13,16 @@
 <div class="scanlines" aria-hidden="true"></div>
 
 <nav class="navbar">
-  <a href="index.html" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
+  <a href="../" class="nav-logo"><span class="pixel-bracket">[</span>PERIKAPSILIO<span class="pixel-bracket">]</span></a>
   <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>
   <ul class="nav-links" id="nav-links">
     <li><a href="../" class="nav-link">HOME</a></li>
-    <li><a href="" class="nav-link active">EVENTS</a></li>
-    <li><a href="../tournaments" class="nav-link">TOURNAMENTS</a></li>
-    <li><a href="../news" class="nav-link">NEWS</a></li>
-    <li><a href="../about" class="nav-link">ABOUT</a></li>
-    <li><a href="../members" class="nav-link">MEMBERS</a></li>
-    <li><a href="../contact" class="nav-link">CONTACT</a></li>
+    <li><a href="./" class="nav-link active">EVENTS</a></li>
+    <li><a href="../tournaments/" class="nav-link">TOURNAMENTS</a></li>
+    <li><a href="../news/" class="nav-link">NEWS</a></li>
+    <li><a href="../about/" class="nav-link">ABOUT</a></li>
+    <li><a href="../members/" class="nav-link">MEMBERS</a></li>
+    <li><a href="../contact/" class="nav-link">CONTACT</a></li>
   </ul>
 </nav>
 
@@ -61,12 +61,12 @@
       <p class="vt footer-tagline">Forged in pixels. Built for glory.</p>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="../events.html" class="footer-link vt">EVENTS</a>
-      <a href="../tournaments.html" class="footer-link vt">TOURNAMENTS</a>
-      <a href="../news.html" class="footer-link vt">NEWS</a>
-      <a href="../about.html" class="footer-link vt">ABOUT</a>
-      <a href="../members.html" class="footer-link vt">MEMBERS</a>
-      <a href="../contact.html" class="footer-link vt">CONTACT</a>
+      <a href="../events/" class="footer-link vt">EVENTS</a>
+      <a href="../tournaments/" class="footer-link vt">TOURNAMENTS</a>
+      <a href="../news/" class="footer-link vt">NEWS</a>
+      <a href="../about/" class="footer-link vt">ABOUT</a>
+      <a href="../members/" class="footer-link vt">MEMBERS</a>
+      <a href="../contact/" class="footer-link vt">CONTACT</a>
     </nav>
     <div class="footer-social">
       <a href="#" class="social-link" aria-label="Instagram">
@@ -92,6 +92,8 @@
   let searchTerm = '';
   const PAGE_SIZE = 9;
 
+  let allEventsCache = [];
+
   async function loadEvents() {
     const grid = document.getElementById('events-grid');
     grid.innerHTML = '<div class="card-loading press">LOADING...</div>';
@@ -99,17 +101,17 @@
     let filters = '';
     if (currentFilter) filters = `filters[type][$eq]=${currentFilter}`;
 
-    const data = await API.getEvents({ page: currentPage, pageSize: PAGE_SIZE, sort: 'date:asc', filters });
+    const data = await API.getEvents({
+      page: currentPage,
+      pageSize: PAGE_SIZE,
+      sort: 'date:asc',
+      filters,
+      type: currentFilter,
+      search: searchTerm
+    });
 
-    // client-side search filter on mock data
-    let items = data ? data.data : [];
-    if (searchTerm) {
-      const s = searchTerm.toLowerCase();
-      items = items.filter(i => JSON.stringify(i).toLowerCase().includes(s));
-    }
-    if (currentFilter && items.length && items[0].attributes.type) {
-      items = items.filter(i => (i.attributes.type || '').toUpperCase() === currentFilter);
-    }
+    const items = data ? data.data : [];
+    if (items.length) allEventsCache = items;
 
     if (!items.length) {
       grid.innerHTML = PERI.renderEmpty('NO EVENTS FOUND');
@@ -121,9 +123,34 @@
     PERI.initScrollReveal();
 
     // Pagination
-    const meta = data ? data.meta.pagination : { pageCount: 1, page: 1 };
+    const meta = data && data.meta ? data.meta.pagination : { pageCount: 1, page: 1 };
     renderPagination(meta);
+    openFromHash();
   }
+
+  async function openFromHash() {
+    const hash = decodeURIComponent(location.hash.replace(/^#/, ''));
+    if (!hash) return;
+    let item = allEventsCache.find(i => (i.attributes.slug || String(i.id)) === hash);
+    if (!item) {
+      const all = await API.getEvents({ pageSize: 100 });
+      item = (all && all.data || []).find(i => (i.attributes.slug || String(i.id)) === hash);
+    }
+    if (!item) return;
+    const a = item.attributes;
+    PERI.openModal({
+      badge: a.type || 'EVENT',
+      badgeColor: 'var(--accent)',
+      title: a.title,
+      meta: [
+        `📅 ${PERI.formatDate(a.date)}`,
+        `📍 ${PERI.escapeHtml(a.location || 'TBA')}`
+      ],
+      body: a.description || ''
+    });
+  }
+
+  window.addEventListener('hashchange', openFromHash);
 
   function renderPagination(meta) {
     const container = document.getElementById('events-pagination');

@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "username": "ZEUS_GR",
+      "realName": "Alexandros P.",
+      "role": "IGL",
+      "game": "CS2",
+      "order": 1
+    },
+    {
+      "username": "ARTEMIS",
+      "realName": "Sofia K.",
+      "role": "RIFLER",
+      "game": "CS2",
+      "order": 2
+    },
+    {
+      "username": "HERMES",
+      "realName": "Nikos D.",
+      "role": "AWP",
+      "game": "CS2",
+      "order": 3
+    },
+    {
+      "username": "ATHENA",
+      "realName": "Maria L.",
+      "role": "SUPPORT",
+      "game": "VALORANT",
+      "order": 4
+    },
+    {
+      "username": "ARES99",
+      "realName": "Petros M.",
+      "role": "DUELIST",
+      "game": "VALORANT",
+      "order": 5
+    },
+    {
+      "username": "POSEIDON",
+      "realName": "Giannis T.",
+      "role": "COACH",
+      "game": "FIFA",
+      "order": 6
+    }
+  ]
+}

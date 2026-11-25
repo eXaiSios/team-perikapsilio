@@ -1,177 +1,186 @@
 /* =============================================
-   TEAM PERIKAPSILIO — STRAPI API CLIENT
+   TEAM PERIKAPSILIO — GIT-BASED CMS DATA CLIENT
    ============================================= */
 
 const API = (() => {
 
-  // ── CONFIGURATION ──
-  // Update BASE_URL to point to your Strapi instance
-  const BASE_URL = window.STRAPI_URL || 'http://localhost:1337';
-  const API_BASE  = `${BASE_URL}/api`;
+  // Detect site root relative to api.js script tag so it works on / and /subpage/
+  const DATA_BASE = (() => {
+    const scripts = document.getElementsByTagName('script');
+    for (const s of scripts) {
+      const src = s.getAttribute('src') || '';
+      if (src.endsWith('api.js')) {
+        return src.slice(0, -'api.js'.length) + 'data/';
+      }
+    }
+    return 'data/';
+  })();
 
-  // Optional: API token for protected endpoints
-  const TOKEN = window.STRAPI_TOKEN || '';
+  const cache = {};
 
-  const headers = TOKEN
-    ? { 'Authorization': `Bearer ${TOKEN}`, 'Content-Type': 'application/json' }
-    : { 'Content-Type': 'application/json' };
-
-  // ── GENERIC FETCH ──
-  async function request(path, options = {}) {
+  // Load a collection from data/<name>.json
+  async function loadCollection(name) {
+    if (cache[name]) return cache[name];
     try {
-      const res = await fetch(`${API_BASE}${path}`, {
-        headers,
-        ...options
+      const res = await fetch(`${DATA_BASE}${name}.json`, { cache: 'no-cache' });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const json = await res.json();
+      const rawItems = Array.isArray(json) ? json : (json.items || json.data || []);
+      const normalized = rawItems.map((item, idx) => {
+        if (item && item.attributes) return item;
+        const { id, ...attrs } = item;
+        return { id: id || idx + 1, attributes: attrs };
       });
-      if (!res.ok) throw new Error(`API error ${res.status}`);
-      return await res.json();
+      cache[name] = normalized;
+      return normalized;
     } catch (err) {
-      console.error('[Perikapsilio API]', err);
-      return null;
+      console.error(`[Perikapsilio Git CMS] Failed to load ${name}.json:`, err);
+      return [];
     }
   }
 
-  // ── HELPER: build Strapi query string ──
-  function buildQuery(params = {}) {
-    const parts = [];
-    if (params.page)     parts.push(`pagination[page]=${params.page}`);
-    if (params.pageSize) parts.push(`pagination[pageSize]=${params.pageSize}`);
-    if (params.sort)     parts.push(`sort=${params.sort}`);
-    if (params.filters)  parts.push(params.filters);
-    if (params.populate) parts.push(`populate=${params.populate}`);
-    return parts.length ? '?' + parts.join('&') : '';
+  function sortItems(items, sortSpec) {
+    if (!sortSpec) return items;
+    const [field, dir = 'asc'] = sortSpec.split(':');
+    const mult = dir.toLowerCase() === 'desc' ? -1 : 1;
+    return [...items].sort((a, b) => {
+      const va = a.attributes[field];
+      const vb = b.attributes[field];
+      if (va == null && vb == null) return 0;
+      if (va == null) return 1;
+      if (vb == null) return -1;
+      if (typeof va === 'number' && typeof vb === 'number') return (va - vb) * mult;
+      return String(va).localeCompare(String(vb)) * mult;
+    });
+  }
+
+  function queryCollection(items, { page = 1, pageSize = 25, sort = '', filterFn = null, search = '' } = {}) {
+    let result = items;
+    if (filterFn) result = result.filter(filterFn);
+    if (search) {
+      const s = search.toLowerCase();
+      result = result.filter(item => JSON.stringify(item.attributes).toLowerCase().includes(s));
+    }
+    if (sort) result = sortItems(result, sort);
+
+    const total = result.length;
+    const pageCount = Math.max(1, Math.ceil(total / pageSize));
+    const safePage = Math.min(Math.max(1, page), pageCount);
+    const start = (safePage - 1) * pageSize;
+    const paged = result.slice(start, start + pageSize);
+
+    return {
+      data: paged,
+      meta: { pagination: { page: safePage, pageSize, pageCount, total } }
+    };
   }
 
   // ── EVENTS ──
-  async function getEvents({ page = 1, pageSize = 9, sort = 'date:asc', filters = '' } = {}) {
-    const q = buildQuery({ page, pageSize, sort, filters, populate: '*' });
-    return request(`/events${q}`);
+  async function getEvents({ page = 1, pageSize = 9, sort = 'date:asc', type = '', search = '' } = {}) {
+    const items = await loadCollection('events');
+    return queryCollection(items, {
+      page,
+      pageSize,
+      sort,
+      search,
+      filterFn: type ? (i => (i.attributes.type || '').toUpperCase() === type.toUpperCase()) : null
+    });
   }
 
-  async function getEvent(id) {
-    return request(`/events/${id}?populate=*`);
+  async function getEvent(idOrSlug) {
+    const items = await loadCollection('events');
+    return items.find(i => String(i.id) === String(idOrSlug) || i.attributes.slug === idOrSlug) || null;
   }
 
   // ── TOURNAMENTS ──
-  async function getTournaments({ page = 1, pageSize = 9, sort = 'startDate:asc', filters = '' } = {}) {
-    const q = buildQuery({ page, pageSize, sort, filters, populate: '*' });
-    return request(`/tournaments${q}`);
+  async function getTournaments({ page = 1, pageSize = 50, sort = 'startDate:asc', status = '', search = '' } = {}) {
+    const items = await loadCollection('tournaments');
+    return queryCollection(items, {
+      page,
+      pageSize,
+      sort,
+      search,
+      filterFn: status ? (i => (i.attributes.status || '').toUpperCase() === status.toUpperCase()) : null
+    });
   }
 
-  async function getTournament(id) {
-    return request(`/tournaments/${id}?populate=*`);
+  async function getTournament(idOrSlug) {
+    const items = await loadCollection('tournaments');
+    return items.find(i => String(i.id) === String(idOrSlug) || i.attributes.slug === idOrSlug) || null;
   }
 
   // ── NEWS ──
-  async function getNews({ page = 1, pageSize = 9, sort = 'publishedAt:desc', filters = '' } = {}) {
-    const q = buildQuery({ page, pageSize, sort, filters, populate: '*' });
-    return request(`/news-posts${q}`);
+  async function getNews({ page = 1, pageSize = 9, sort = 'publishedAt:desc', category = '', search = '' } = {}) {
+    const items = await loadCollection('news');
+    return queryCollection(items, {
+      page,
+      pageSize,
+      sort,
+      search,
+      filterFn: category ? (i => (i.attributes.category || '').toUpperCase() === category.toUpperCase()) : null
+    });
   }
 
-  async function getNewsArticle(id) {
-    return request(`/news-posts/${id}?populate=*`);
+  async function getNewsArticle(idOrSlug) {
+    const items = await loadCollection('news');
+    return items.find(i => String(i.id) === String(idOrSlug) || i.attributes.slug === idOrSlug) || null;
   }
 
   // ── MEMBERS ──
-  async function getMembers({ sort = 'order:asc' } = {}) {
-    const q = buildQuery({ sort, populate: '*' });
-    return request(`/members${q}`);
+  async function getMembers({ sort = 'order:asc', game = '', search = '' } = {}) {
+    const items = await loadCollection('members');
+    return queryCollection(items, {
+      page: 1,
+      pageSize: 200,
+      sort,
+      search,
+      filterFn: game ? (i => (i.attributes.game || '').toUpperCase() === game.toUpperCase()) : null
+    });
   }
 
   // ── BOARD OF DIRECTORS ──
   async function getBoard({ sort = 'order:asc' } = {}) {
-    const q = buildQuery({ sort, populate: '*' });
-    return request(`/board-members${q}`);
+    const items = await loadCollection('board');
+    return queryCollection(items, { page: 1, pageSize: 100, sort });
   }
 
-  // ── CONTACT (POST) ──
+  // ── CONTACT (optional endpoint or mailto fallback) ──
   async function submitContact(data) {
-    return request('/contact-messages', {
-      method: 'POST',
-      body: JSON.stringify({ data })
-    });
-  }
-
-  // ── MOCK DATA (fallback when Strapi is not connected) ──
-  const MOCK = {
-    events: [
-      //{ id: 1, attributes: { title: 'LAN PARTY VOL.3', date: '2025-09-14', location: 'Thessaloniki', type: 'LAN', description: 'Annual LAN gathering for all skill levels. Bring your setup!', slug: 'lan-party-vol-3' } },
-      //{ id: 2, attributes: { title: 'CS2 WORKSHOP', date: '2025-08-22', location: 'Online', type: 'WORKSHOP', description: 'Pro tips and tactics for Counter-Strike 2 from our top players.', slug: 'cs2-workshop' } },
-      //{ id: 3, attributes: { title: 'GAMING NIGHT', date: '2025-10-05', location: 'Athens', type: 'SOCIAL', description: 'Casual gaming night open to all members and friends.', slug: 'gaming-night' } }
-    ],
-    tournaments: [
-      //{ id: 1, attributes: { name: 'GR ESPORTS CUP 2025', game: 'CS2', startDate: '2025-09-01', endDate: '2025-09-30', status: 'UPCOMING', prize: '€2,000', platform: 'PC', slug: 'gr-esports-cup-2025' } },
-      //{ id: 2, attributes: { name: 'BALKAN LEAGUE S4', game: 'VALORANT', startDate: '2025-08-10', endDate: '2025-10-20', status: 'ACTIVE', prize: '€5,000', platform: 'PC', slug: 'balkan-league-s4' } },
-      //{ id: 3, attributes: { name: 'UNIVERSITY CUP', game: 'FIFA 25', startDate: '2025-11-01', endDate: '2025-11-30', status: 'UPCOMING', prize: '€500', platform: 'PS5', slug: 'university-cup' } }
-    ],
-    news: [
-      //{ id: 1, attributes: { title: 'WE QUALIFIED FOR THE BALKAN FINALS', publishedAt: '2025-07-01', category: 'ACHIEVEMENT', summary: 'After six weeks of intense play, Team Perikapsilio has secured a spot in the Balkan Valorant Finals.', slug: 'qualified-balkan-finals' } },
-      //{ id: 2, attributes: { title: 'NEW ROSTER ANNOUNCEMENT', publishedAt: '2025-06-15', category: 'TEAM', summary: 'We are proud to welcome two new members to the Perikapsilio family for the upcoming season.', slug: 'new-roster' } },
-      //{ id: 3, attributes: { title: 'LAN PARTY VOL.3 ANNOUNCED', publishedAt: '2025-06-01', category: 'EVENT', summary: 'Save the date — our biggest LAN event yet is coming to Thessaloniki this September.', slug: 'lan-party-announced' } }
-    ],
-    members: [
-      //{ id: 1, attributes: { username: 'ZEUS_GR', realName: 'Alexandros P.', role: 'IGL', game: 'CS2', order: 1 } },
-      //{ id: 2, attributes: { username: 'ARTEMIS', realName: 'Sofia K.', role: 'RIFLER', game: 'CS2', order: 2 } },
-      //{ id: 3, attributes: { username: 'HERMES', realName: 'Nikos D.', role: 'AWP', game: 'CS2', order: 3 } },
-      //{ id: 4, attributes: { username: 'ATHENA', realName: 'Maria L.', role: 'SUPPORT', game: 'VALORANT', order: 4 } },
-      //{ id: 5, attributes: { username: 'ARES99', realName: 'Petros M.', role: 'DUELIST', game: 'VALORANT', order: 5 } },
-      //{ id: 6, attributes: { username: 'POSEIDON', realName: 'Giannis T.', role: 'COACH', game: 'CS2', order: 6 } }
-    ],
-    board: [
-      { id: 1, attributes: { name: 'Charalampos Sidiropoulos', title: 'PRESIDENT', bio: 'Founder of Perikapsilio and the driving force behind the organization since day one.', order: 1 } },
-      { id: 2, attributes: { name: 'Christos Kazakos', title: 'VICE PRESIDENT', bio: 'Handles partnerships, sponsorships, and represents the team at official events.', order: 2 } },
-      { id: 3, attributes: { name: 'Tatiana Christoforidou', title: 'SECRETARY', bio: 'Manages internal communications, meeting minutes, and administrative operations.', order: 3 } },
-      { id: 4, attributes: { name: 'Konstantinos Valasiadis', title: 'TREASURER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },
-      { id: 5, attributes: { name: 'Dimitra Papadopoulou', title: 'ARTIST', bio: 'Responsible for IT infrastructure, streaming setup, and technical support at events.', order: 5 } },
-      { id: 6, attributes: { name: 'Ioanna Mpampathanasi', title: 'SOCIAL MEDIA MANAGER', bio: 'Oversees the team budget, sponsorship funds, and financial reporting.', order: 4 } },
-      { id: 7, attributes: { name: 'Eftihis Papapsifakis', title: 'SITE MEDIA MANAGER', bio: 'My primary interests lie in software engineering', order: 4 } }
-    ]
-  };
-
-  // Wrap mock data in Strapi-like structure
-  function mockResponse(key, filters = {}) {
-    let data = MOCK[key] || [];
-    // basic text filter
-    if (filters.search) {
-      const s = filters.search.toLowerCase();
-      data = data.filter(d => JSON.stringify(d).toLowerCase().includes(s));
+    const endpoint = window.CONTACT_ENDPOINT || '';
+    if (endpoint) {
+      try {
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify(data)
+        });
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        return await res.json().catch(() => ({ ok: true }));
+      } catch (err) {
+        console.error('[Perikapsilio Contact]', err);
+        return null;
+      }
     }
-    return { data, meta: { pagination: { page: 1, pageSize: 25, pageCount: 1, total: data.length } } };
-  }
 
-  // Use mock data if Strapi returns null
-  async function getEventsWithFallback(opts) {
-    const res = await getEvents(opts);
-    return res || mockResponse('events');
-  }
-  async function getTournamentsWithFallback(opts) {
-    const res = await getTournaments(opts);
-    return res || mockResponse('tournaments');
-  }
-  async function getNewsWithFallback(opts) {
-    const res = await getNews(opts);
-    return res || mockResponse('news');
-  }
-  async function getMembersWithFallback(opts) {
-    const res = await getMembers(opts);
-    return res || mockResponse('members');
-  }
-  async function getBoardWithFallback(opts) {
-    const res = await getBoard(opts);
-    return res || mockResponse('board');
+    // Static Git-based fallback: open pre-filled email client
+    const subjectLabel = data.subject ? `[${data.subject.toUpperCase()}] ` : '';
+    const subject = encodeURIComponent(`${subjectLabel}Contact from ${data.name}`);
+    const body = encodeURIComponent(`Name: ${data.name}\nEmail: ${data.email}\n\n${data.message}`);
+    window.location.href = `mailto:hello@perikapsilio.gr?subject=${subject}&body=${body}`;
+    return { fallback: true };
   }
 
   return {
-    getEvents: getEventsWithFallback,
+    getEvents,
     getEvent,
-    getTournaments: getTournamentsWithFallback,
+    getTournaments,
     getTournament,
-    getNews: getNewsWithFallback,
+    getNews,
     getNewsArticle,
-    getMembers: getMembersWithFallback,
-    getBoard: getBoardWithFallback,
+    getMembers,
+    getBoard,
     submitContact,
-    BASE_URL
+    DATA_BASE
   };
 
 })();

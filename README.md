@@ -1,139 +1,69 @@
-# Team Perikapsilio — Setup Guide
+# Team Perikapsilio
+
+Static retro 8-bit website for **Team Perikapsilio**, powered by a **Git-based CMS** (Sveltia CMS + JSON data files in `data/`).
 
 ## File Structure
 
 ```
 perikapsilio/
-├── index.html          ← Homepage (hero + 3 preview sections)
-├── events.html         ← Events page (filterable, paginated)
-├── tournaments.html    ← Tournaments page (split by status)
-├── news.html           ← News page (featured article + grid)
-├── about.html          ← About page (stats, values, timeline)
-├── members.html        ← Members page (pixel avatars, filter by game)
-├── contact.html        ← Contact page (info + form → Strapi)
-├── style.css           ← Full 8-bit stylesheet (CRT, scanlines, fonts)
-├── api.js              ← Strapi API client with mock data fallback
-└── main.js             ← Shared JS (stars, hamburger, card renders)
+├── index.html             ← Homepage (hero + 3 preview sections)
+├── events/index.html      ← Events page (filterable, paginated, detail modal)
+├── tournaments/index.html ← Tournaments page (split by status, detail modal)
+├── news/index.html        ← News page (featured article + grid, detail modal)
+├── about/index.html       ← About page (stats, values, timeline)
+├── members/index.html     ← Members page (board of directors + player roster)
+├── contact/index.html     ← Contact page (info + form)
+├── admin/
+│   ├── index.html         ← Sveltia CMS admin interface (/admin/)
+│   └── config.yml         ← Git-based CMS schema & GitHub backend config
+├── data/
+│   ├── events.json        ← Events collection
+│   ├── tournaments.json   ← Tournaments collection
+│   ├── news.json          ← News posts collection
+│   ├── members.json       ← Players & staff collection
+│   └── board.json         ← Board of directors collection
+├── style.css              ← Full 8-bit stylesheet (CRT, scanlines, fonts, modal)
+├── api.js                 ← Git-based CMS client reading data/*.json
+└── main.js                ← Shared JS (stars, hamburger, card renders, modal)
 ```
 
 ---
 
-## Strapi Backend Setup
+## Managing Content (Git-based CMS)
 
-### 1. Install Strapi
+All site content lives in `data/*.json` right in this repository. You can update content in two ways:
 
-```bash
-npx create-strapi-app@latest perikapsilio-backend --quickstart
-```
+### Option 1: Visual Admin UI (`/admin/`)
 
-### 2. Required Content Types
+1. Visit `/admin/` on your deployed site (e.g. `https://team.perikapsilio.gr/admin/`).
+2. Sign in with GitHub (using a GitHub Personal Access Token with `repo` scope, or your configured OAuth app).
+3. Edit **Events**, **Tournaments**, **News Posts**, **Players & Staff**, or **Board of Directors**.
+4. Saving publishes a commit directly to `main` in `eXaiSios/team-perikapsilio`, and the live site updates automatically.
 
-Create these collection types in the Strapi admin (`/admin`):
+> **Local editing:** Sveltia CMS also supports opening the local repository folder directly in Chromium-based browsers when running on `localhost`.
 
-#### Events
-| Field        | Type     | Notes                          |
-|-------------|----------|-------------------------------|
-| title        | Text     | Required                      |
-| date         | DateTime |                               |
-| location     | Text     |                               |
-| type         | Enum     | LAN, WORKSHOP, SOCIAL, TOURNAMENT |
-| description  | Rich Text|                               |
-| slug         | UID      | from `title`                  |
+### Option 2: Edit JSON Files Directly
 
-#### Tournaments
-| Field       | Type     | Notes                         |
-|-------------|----------|-------------------------------|
-| name        | Text     | Required                      |
-| game        | Text     | CS2, VALORANT, FIFA 25, etc.  |
-| startDate   | DateTime |                               |
-| endDate     | DateTime |                               |
-| status      | Enum     | ACTIVE, UPCOMING, COMPLETED   |
-| prize       | Text     | e.g. €2,000                   |
-| platform    | Text     | PC, PS5, etc.                 |
-| slug        | UID      | from `name`                   |
-
-#### News Posts
-| Field       | Type     | Notes                         |
-|-------------|----------|-------------------------------|
-| title       | Text     | Required                      |
-| summary     | Text     |                               |
-| body        | Rich Text|                               |
-| category    | Enum     | ACHIEVEMENT, TEAM, EVENT, ANNOUNCEMENT |
-| slug        | UID      | from `title`                  |
-
-#### Members
-| Field    | Type    | Notes                          |
-|----------|---------|-------------------------------|
-| username | Text    | Required — in-game alias       |
-| realName | Text    | Optional                      |
-| role     | Enum    | IGL, AWP, RIFLER, SUPPORT, DUELIST, COACH |
-| game     | Enum    | CS2, VALORANT, FIFA            |
-| order    | Integer | Display order                 |
-
-#### Directors
-| Field    | Type    | Notes                          |
-|----------|---------|-------------------------------|
-| name     | Text    | Required        |
-| title    | Text    | Required                      |
-| bio      | Text    |                               |
-| order    | Integer | Display order                 |
-
-#### Contact Messages
-| Field   | Type | Notes     |
-|---------|------|-----------|
-| name    | Text | Required  |
-| email   | Email| Required  |
-| subject | Text |           |
-| message | Text | Required  |
-
-### 3. Set Permissions
-
-In `Settings → Roles → Public`, enable `find` and `findOne` for:
-- Events
-- Tournaments
-- News Posts
-- Members
-
-Enable `create` for:
-- Contact Messages
-
-### 4. Connect the Frontend
-
-Edit `api.js`, line 9:
-
-```js
-const BASE_URL = window.STRAPI_URL || 'http://localhost:1337';
-```
-
-For production, set `window.STRAPI_URL` before loading `api.js`:
-
-```html
-<script>window.STRAPI_URL = 'https://api.perikapsilio.gr';</script>
-<script src="api.js"></script>
-```
-
-Or if you use an API token (Settings → API Tokens → Create):
-
-```html
-<script>
-  window.STRAPI_URL   = 'https://api.perikapsilio.gr';
-  window.STRAPI_TOKEN = 'your-token-here';
-</script>
-```
+Edit any file in `data/` (`events.json`, `tournaments.json`, `news.json`, `members.json`, `board.json`) and push to `main`.
 
 ---
 
-## Mock Data Fallback
+## Contact Form
 
-When Strapi is unreachable, `api.js` automatically serves built-in mock data so the site always shows content during development. The fallback covers all 4 content types.
+By default (with no backend server required), submitting the contact form opens the visitor's email client pre-filled to `hello@perikapsilio.gr`.
+
+If you want silent form submissions (e.g. via Formspree or Web3Forms), set `window.CONTACT_ENDPOINT` before loading `api.js` in `contact/index.html`:
+
+```html
+<script>window.CONTACT_ENDPOINT = 'https://formspree.io/f/your-form-id';</script>
+<script src="../api.js"></script>
+```
 
 ---
 
 ## Deployment
 
-The frontend is **100% static** — just serve the HTML/CSS/JS files from any host (Nginx, Apache, Netlify, Vercel, GitHub Pages).
-
-Strapi can run on any Node.js host (Railway, Render, DigitalOcean, VPS).
+The entire site + CMS is **100% static** — deploy directly to GitHub Pages, Cloudflare Pages, Netlify, Vercel, or any static web server with zero build step.
 
 ---
 
@@ -141,5 +71,3 @@ Strapi can run on any Node.js host (Railway, Render, DigitalOcean, VPS).
 
 - **Press Start 2P** — headings, labels, badges (via Google Fonts)
 - **VT323** — body text, descriptions (via Google Fonts)
-
-Both load from `fonts.googleapis.com`. For offline use, download and host locally.

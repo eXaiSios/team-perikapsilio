@@ -1,0 +1,46 @@
+{
+  "items": [
+    {
+      "name": "Charalampos Sidiropoulos",
+      "title": "PRESIDENT",
+      "bio": "Founder of Perikapsilio and the driving force behind the organization since day one.",
+      "order": 1
+    },
+    {
+      "name": "Christos Kazakos",
+      "title": "VICE PRESIDENT",
+      "bio": "Handles partnerships, sponsorships, and represents the team at official events.",
+      "order": 2
+    },
+    {
+      "name": "Tatiana Christoforidou",
+      "title": "SECRETARY",
+      "bio": "Manages internal communications, meeting minutes, and administrative operations.",
+      "order": 3
+    },
+    {
+      "name": "Konstantinos Valasiadis",
+      "title": "TREASURER",
+      "bio": "Oversees the team budget, sponsorship funds, and financial reporting.",
+      "order": 4
+    },
+    {
+      "name": "Dimitra Papadopoulou",
+      "title": "ARTIST",
+      "bio": "Leads visual identity, graphic design, and creative direction for the team.",
+      "order": 5
+    },
+    {
+      "name": "Ioanna Mpampathanasi",
+      "title": "SOCIAL MEDIA MANAGER",
+      "bio": "Manages social channels, community engagement, and event coverage.",
+      "order": 6
+    },
+    {
+      "name": "Eftihis Papapsifakis",
+      "title": "SITE MEDIA MANAGER",
+      "bio": "My primary interests lie in software engineering",
+      "order": 7
+    }
+  ]
+}

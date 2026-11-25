@@ -2,6 +2,37 @@
    TEAM PERIKAPSILIO — MAIN JS
    ============================================= */
 
+// ── BASE PATH DETECTION (works at root / and subpages /events/ etc.) ──
+const SITE_BASE = (() => {
+  const scripts = document.getElementsByTagName('script');
+  for (const s of scripts) {
+    const src = s.getAttribute('src') || '';
+    if (src.endsWith('main.js')) {
+      return src.slice(0, -'main.js'.length);
+    }
+  }
+  return '';
+})();
+
+// ── HTML ESCAPE ──
+function escapeHtml(str) {
+  if (str == null) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function formatRichText(str) {
+  if (!str) return '';
+  return escapeHtml(str)
+    .split(/\n{2,}/)
+    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
+    .join('');
+}
+
 // ── STARS ──
 function initStars() {
   const container = document.getElementById('hero-stars');
@@ -48,54 +79,94 @@ function initBackTop() {
 // ── INTERSECTION OBSERVER ANIMATIONS ──
 function initScrollReveal() {
   if (!('IntersectionObserver' in window)) return;
-  const cards = document.querySelectorAll('.card, .member-card, .stat-box, .value-item, .contact-item');
+  const cards = document.querySelectorAll('.card, .member-card, .board-card, .stat-box, .value-item, .contact-item');
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
         e.target.style.opacity = '1';
-        e.target.style.transform = e.target.style.transform.replace('translateY(20px)', 'translateY(0)');
+        e.target.style.transform = '';
         io.unobserve(e.target);
       }
     });
   }, { threshold: 0.1 });
   cards.forEach(c => {
+    if (c.dataset.revealInit) return;
+    c.dataset.revealInit = '1';
     c.style.opacity = '0';
-    c.style.transform = (c.style.transform || '') + ' translateY(20px)';
-    c.style.transition = 'opacity 0.4s ease, transform 0.4s ease, border-color 0.2s';
+    c.style.transform = 'translateY(20px)';
+    c.style.transition = 'opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, background 0.2s';
     io.observe(c);
   });
 }
 
 // ── FORMAT DATE ──
 function formatDate(dateStr) {
-  if (!dateStr) return '???';
+  if (!dateStr) return 'TBA';
   const d = new Date(dateStr);
+  if (isNaN(d.getTime())) return escapeHtml(dateStr);
   return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }).toUpperCase();
 }
+
+// ── DETAIL MODAL ──
+function closeModal() {
+  const existing = document.getElementById('peri-modal-backdrop');
+  if (existing) existing.remove();
+  if (location.hash) {
+    history.replaceState(null, '', location.pathname + location.search);
+  }
+}
+
+function openModal({ badge = '', badgeColor = 'var(--accent)', title = '', meta = [], body = '' }) {
+  closeModal();
+  const backdrop = document.createElement('div');
+  backdrop.id = 'peri-modal-backdrop';
+  backdrop.className = 'peri-modal-backdrop';
+  backdrop.innerHTML = `
+    <div class="peri-modal" role="dialog" aria-modal="true">
+      <button class="peri-modal-close" aria-label="Close modal">✕</button>
+      ${badge ? `<span class="card-badge" style="background:${badgeColor}">${escapeHtml(badge)}</span>` : ''}
+      <h2 class="peri-modal-title">${escapeHtml(title)}</h2>
+      ${meta.length ? `<div class="peri-modal-meta">${meta.map(m => `<span>${m}</span>`).join('')}</div>` : ''}
+      <div class="peri-modal-body vt">${formatRichText(body) || '<p>No additional details available.</p>'}</div>
+    </div>
+  `;
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  backdrop.querySelector('.peri-modal-close').addEventListener('click', closeModal);
+  document.body.appendChild(backdrop);
+}
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
 
 // ── RENDER HELPERS ──
 function renderEventCard(item) {
   const a = item.attributes;
+  const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-event" onclick="window.location='events.html#${a.slug || item.id}'">
-      <span class="card-badge">${a.type || 'EVENT'}</span>
-      <h3 class="card-title">${a.title}</h3>
+    <article class="card card-event" onclick="window.location='${SITE_BASE}events/#${slug}'">
+      <span class="card-badge">${escapeHtml(a.type || 'EVENT')}</span>
+      <h3 class="card-title">${escapeHtml(a.title)}</h3>
       <p class="card-meta"><span class="icon">📅</span> ${formatDate(a.date)}</p>
-      <p class="card-meta"><span class="icon">📍</span> ${a.location || 'TBA'}</p>
-      <p class="card-desc vt">${a.description || ''}</p>
+      <p class="card-meta"><span class="icon">📍</span> ${escapeHtml(a.location || 'TBA')}</p>
+      <p class="card-desc vt">${escapeHtml(a.description || '')}</p>
       <span class="card-link press">DETAILS →</span>
     </article>`;
 }
 
 function renderTournamentCard(item) {
   const a = item.attributes;
-  const statusColor = a.status === 'ACTIVE' ? 'var(--accent3)' : a.status === 'COMPLETED' ? 'var(--text-dim)' : 'var(--accent2)';
+  const status = (a.status || 'UPCOMING').toUpperCase();
+  const statusColor = status === 'ACTIVE' ? 'var(--accent3)' : status === 'COMPLETED' ? 'var(--text-dim)' : 'var(--accent2)';
+  const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-tourney" onclick="window.location='tournaments.html#${a.slug || item.id}'">
-      <span class="card-badge" style="background:${statusColor}">${a.status || 'UPCOMING'}</span>
-      <h3 class="card-title">${a.name}</h3>
-      <p class="card-meta"><span class="icon">🎮</span> ${a.game || 'TBA'}</p>
-      <p class="card-meta"><span class="icon">🏆</span> ${a.prize || 'TBA'}</p>
+    <article class="card card-tourney" onclick="window.location='${SITE_BASE}tournaments/#${slug}'">
+      <span class="card-badge" style="background:${statusColor}">${escapeHtml(status)}</span>
+      <h3 class="card-title">${escapeHtml(a.name)}</h3>
+      <p class="card-meta"><span class="icon">🎮</span> ${escapeHtml(a.game || 'TBA')}</p>
+      <p class="card-meta"><span class="icon">🏆</span> ${escapeHtml(a.prize || 'TBA')}</p>
       <p class="card-meta"><span class="icon">📅</span> ${formatDate(a.startDate)} – ${formatDate(a.endDate)}</p>
       <span class="card-link press">VIEW →</span>
     </article>`;
@@ -103,18 +174,19 @@ function renderTournamentCard(item) {
 
 function renderNewsCard(item) {
   const a = item.attributes;
+  const slug = encodeURIComponent(a.slug || item.id);
   return `
-    <article class="card card-news" onclick="window.location='news.html#${a.slug || item.id}'">
-      <span class="card-badge">${a.category || 'NEWS'}</span>
-      <h3 class="card-title">${a.title}</h3>
+    <article class="card card-news" onclick="window.location='${SITE_BASE}news/#${slug}'">
+      <span class="card-badge">${escapeHtml(a.category || 'NEWS')}</span>
+      <h3 class="card-title">${escapeHtml(a.title)}</h3>
       <p class="card-meta"><span class="icon">📰</span> ${formatDate(a.publishedAt)}</p>
-      <p class="card-desc vt">${a.summary || ''}</p>
+      <p class="card-desc vt">${escapeHtml(a.summary || '')}</p>
       <span class="card-link press">READ →</span>
     </article>`;
 }
 
 function renderEmpty(msg = 'NO DATA YET') {
-  return `<div class="empty-state"><span class="press">${msg}</span><p class="vt">Check back soon for updates.</p></div>`;
+  return `<div class="empty-state"><span class="press">${escapeHtml(msg)}</span><p class="vt">Check back soon for updates.</p></div>`;
 }
 
 // ── HOME PAGE LOADERS ──
@@ -154,28 +226,39 @@ async function loadHomeNews() {
   initScrollReveal();
 }
 
+// ── ACTIVE NAV LINK ──
+function initActiveNav() {
+  const segments = location.pathname.replace(/\/index\.html$/, '/').split('/').filter(Boolean);
+  const currentSection = segments.length ? segments[segments.length - 1] : '';
+  const knownSections = ['events', 'tournaments', 'news', 'about', 'members', 'contact'];
+  const activeKey = knownSections.includes(currentSection) ? currentSection : 'home';
+
+  document.querySelectorAll('.nav-link').forEach(link => {
+    const label = link.textContent.trim().toLowerCase();
+    link.classList.toggle('active', label === activeKey);
+  });
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', () => {
   initStars();
   initHamburger();
   initBackTop();
+  initActiveNav();
 
   // Home page sections
   loadHomeEvents();
   loadHomeTournaments();
   loadHomeNews();
-
-  // Highlight current nav link
-  const currentPage = location.pathname.split('/').pop() || 'index.html';
-  document.querySelectorAll('.nav-link').forEach(link => {
-    const href = link.getAttribute('href');
-    link.classList.toggle('active', href === currentPage || (currentPage === '' && href === 'index.html'));
-  });
 });
 
 // Expose for inner pages
 window.PERI = {
+  SITE_BASE,
+  escapeHtml,
   formatDate,
+  openModal,
+  closeModal,
   renderEventCard,
   renderTournamentCard,
   renderNewsCard,

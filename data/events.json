@@ -1,0 +1,28 @@
+{
+  "items": [
+    {
+      "slug": "lan-party-vol-3",
+      "title": "LAN PARTY VOL.3",
+      "date": "2026-09-14T18:00:00.000Z",
+      "location": "Thessaloniki",
+      "type": "LAN",
+      "description": "Annual LAN gathering for all skill levels. Bring your setup, meet the squad, and compete in friendly brackets all night long."
+    },
+    {
+      "slug": "cs2-workshop",
+      "title": "CS2 TACTICAL WORKSHOP",
+      "date": "2026-08-22T19:00:00.000Z",
+      "location": "Online (Discord)",
+      "type": "WORKSHOP",
+      "description": "Utility lineups, map control, and team communication tips for Counter-Strike 2 from our top players and coaching staff."
+    },
+    {
+      "slug": "gaming-night-athens",
+      "title": "GAMING NIGHT ATHENS",
+      "date": "2026-10-05T20:00:00.000Z",
+      "location": "Athens",
+      "type": "SOCIAL",
+      "description": "Casual gaming night open to all members and friends. Retro consoles, co-op challenges, and community hangout."
+    }
+  ]
+}
