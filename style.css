@@ -332,6 +332,33 @@ ul { list-style: none; }
   padding: var(--section-pad);
 }
 .section-alt .section { padding: 0; max-width: 1200px; margin: 0 auto; }
+.section-alt > .cards-grid,
+.section-alt > .news-grid,
+.section-alt > .section-header,
+.section-alt > .section-footer {
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+#home-events,
+#home-tournaments,
+#home-news {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--grid-gap);
+}
+#home-events .card,
+#home-tournaments .card,
+#home-news .card {
+  flex: 1 1 280px;
+  max-width: 380px;
+}
+#home-events .empty-state,
+#home-tournaments .empty-state,
+#home-news .empty-state {
+  width: 100%;
+}
 .section-header { text-align: center; margin-bottom: 3rem; }
 .section-tag {
   font-size: 0.5rem;
