@@ -1,37 +1,3 @@
 {
-  "items": [
-    {
-      "name": "BALKAN LEAGUE S4",
-      "slug": "balkan-league-s4",
-      "game": "VALORANT",
-      "startDate": "2026-08-10",
-      "endDate": "2026-10-20",
-      "status": "ACTIVE",
-      "prize": "€5,000",
-      "platform": "PC",
-      "description": "Team Perikapsilio's Valorant roster competes in the Balkan League Season 4 against top regional squads."
-    },
-    {
-      "name": "GR ESPORTS CUP 2026",
-      "slug": "gr-esports-cup-2026",
-      "game": "CS2",
-      "startDate": "2026-09-01",
-      "endDate": "2026-09-30",
-      "status": "UPCOMING",
-      "prize": "€2,000",
-      "platform": "PC",
-      "description": "National Counter-Strike 2 championship featuring 16 invited and qualified Greek teams."
-    },
-    {
-      "name": "UNIVERSITY CUP",
-      "slug": "university-cup-fifa",
-      "game": "FIFA",
-      "startDate": "2026-11-01",
-      "endDate": "2026-11-30",
-      "status": "UPCOMING",
-      "prize": "€500",
-      "platform": "PS5",
-      "description": "Inter-university 1v1 and 2v2 football tournament on PlayStation 5."
-    }
-  ]
+  "items": []
 }
