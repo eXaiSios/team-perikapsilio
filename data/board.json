@@ -6,7 +6,12 @@
       "image": "",
       "bio": "",
       "order": 0,
-      "socials": []
+      "socials": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://www.linkedin.com/in/george-kafentzis-87742323/"
+        }
+      ]
     },
     {
       "name": "Charalampos Sidiropoulos",
@@ -16,8 +21,8 @@
       "order": 1,
       "socials": [
         {
-          "platform": "Instagram",
-          "url": "https://www.instagram.com/xaralampos.sid/"
+          "platform": "LinkedIn",
+          "url": "https://www.linkedin.com/in/charalampos-sidiropoulos-7a6a7a356/"
         }
       ]
     },
@@ -48,7 +53,12 @@
       "image": "",
       "bio": "Oversees the team budget, sponsorship funds, and financial reporting.",
       "order": 4,
-      "socials": []
+      "socials": [
+        {
+          "platform": "Instagram",
+          "url": "https://www.linkedin.com/in/konstantinos-valasiadis-0297423b8/"
+        }
+      ]
     },
     {
       "name": "Dimitra Papadopoulou",
