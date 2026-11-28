@@ -14,20 +14,19 @@
   background: var(--bg-card);
   border: 2px solid var(--border);
 }
-.contact-icon { font-size: 1.5rem; }
 .contact-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.45rem;
+  font-size: 1.1rem;
   color: var(--text-dim);
   display: block;
   margin-bottom: 0.4rem;
 }
-.contact-val { font-size: 1.1rem; color: var(--text); }
+.contact-val { font-size: 1.6rem; color: var(--text); }
 .contact-val a:hover { color: var(--accent); }
 .contact-form { background: var(--bg-card); border: 2px solid var(--border); padding: 2rem; }
 .form-title {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.65rem;
+  font-size: 0.9rem;
   color: var(--accent);
   margin-bottom: 1.5rem;
   line-height: 1.8;
@@ -35,7 +34,7 @@
 .form-group { margin-bottom: 1.25rem; }
 .form-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.45rem;
+  font-size: 0.8rem;
   color: var(--text-dim);
   display: block;
   margin-bottom: 0.5rem;
@@ -63,7 +62,7 @@
 .form-msg {
   display: none;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.5rem;
+  font-size: 0.7rem;
   padding: 0.75rem;
   margin-top: 1rem;
   text-align: center;

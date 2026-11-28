@@ -73,6 +73,23 @@
       "bio": "My primary interests lie in software engineering",
       "order": 7,
       "socials": []
+    },
+    {
+      "name": "George Papamatthaiakis",
+      "title": "SOFTWARE ENGINEER",
+      "image": "",
+      "bio": "Fixes whatever breaks!",
+      "order": 8,
+      "socials": [
+        {
+          "platform": "linkedin",
+          "url": "https://www.linkedin.com/in/giorgos-papamatthaiakis-525947285/"
+        },
+        {
+          "platform": "website",
+          "url": "https://github.com/GpapPeaky"
+        }
+      ]
     }
   ]
 }

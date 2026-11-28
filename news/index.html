@@ -39,7 +39,6 @@
 </nav>
 
 <header class="page-hero" data-title="NEWS">
-  <span class="page-hero-tag">◄ TEAM PERIKAPSILIO ►</span>
   <h1 class="page-hero-title">NEWS</h1>
   <p class="page-hero-sub vt">Roster updates, tournament results, announcements and stories from the team.</p>
 </header>
@@ -74,7 +73,6 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="../Assets/logo.png" alt="Team Perikapsilio" class="footer-logo-img">
-      <p class="vt footer-tagline">Forged in pixels. Built for glory.</p>
     </div>
     <nav class="footer-nav" aria-label="Footer navigation">
       <a href="../events/" class="footer-link vt">EVENTS</a>
@@ -193,7 +191,7 @@
           <h2 class="card-title" style="font-size:clamp(0.6rem,2vw,0.9rem)">${PERI.escapeHtml(a.title)}</h2>
           <p class="card-meta"><span class="icon">📰</span> ${PERI.formatDate(a.publishedAt)} ${a.author ? `· ✍️ ${PERI.escapeHtml(a.author)}` : ''}</p>
           <p class="card-desc vt" style="font-size:1.2rem">${PERI.escapeHtml(a.summary || '')}</p>
-          <span class="card-link press">READ FULL ARTICLE →</span>
+          <span class="card-link press">READ FULL ARTICLE -></span>
         </article>`;
       items = items.slice(1);
       firstLoad = false;

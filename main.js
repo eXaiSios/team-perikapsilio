@@ -150,7 +150,7 @@ function initHamburger() {
 function initBackTop() {
   const btn = document.createElement('button');
   btn.className = 'back-top press';
-  btn.textContent = '▲ TOP';
+  btn.textContent = '^ TOP';
   btn.setAttribute('aria-label', 'Back to top');
   document.body.appendChild(btn);
   window.addEventListener('scroll', () => {
@@ -201,7 +201,7 @@ function renderEventCard(item) {
       <p class="card-meta"><span class="BoldTitle">Date:</span> ${formatDate(a.date)}</p>
       <p class="card-meta"><span class="BoldTitle">Location:</span> ${escapeHtml(a.location || 'TBA')}</p>
       <p class="card-desc vt">${escapeHtml(a.description || '')}</p>
-      <span class="card-link press">DETAILS →</span>
+      <span class="card-link press">DETAILS -></span>
     </article>`;
 }
 
@@ -217,7 +217,7 @@ function renderTournamentCard(item) {
       <p class="card-meta"><span class="BoldTitle">🎮</span> ${escapeHtml(a.game || 'TBA')}</p>
       <p class="card-meta"><span class="BoldTitle">Prize:</span> ${escapeHtml(a.prize || 'TBA')}</p>
       <p class="card-meta"><span class="BoldTitle">Date:</span> ${formatDate(a.startDate)} – ${formatDate(a.endDate)}</p>
-      <span class="card-link press">VIEW →</span>
+      <span class="card-link press">VIEW -></span>
     </article>`;
 }
 
@@ -232,7 +232,7 @@ function renderNewsCard(item) {
       <p class="card-meta"><span class="BoldTitle"></span> ${formatDate(a.publishedAt)}</p>
       ${authorMeta}
       <p class="card-desc vt">${escapeHtml(a.summary || '')}</p>
-      <span class="card-link press">READ →</span>
+      <span class="card-link press">READ -></span>
     </article>`;
 }
 
