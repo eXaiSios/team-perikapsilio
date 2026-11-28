@@ -33,7 +33,7 @@
 }
 @keyframes floatPixel {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
+  50% { transform: translateY(-25px); }
 }
 .logo-block { display: grid; grid-template-columns: repeat(3,54px); gap: 0; }
 .lb { width: 54px; height: 54px; }
