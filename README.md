@@ -22,7 +22,8 @@ perikapsilio/
 │   ├── news.json          ← News posts collection
 │   ├── members.json       ← Players & staff collection
 │   └── board.json         ← Board of directors collection
-├── style.css              ← Full 8-bit stylesheet (CRT, scanlines, fonts, modal)
+├── styles/                ← Full 8-bit stylesheet, split in multiple files (CRT, scanlines, fonts, modal)
+│   └──<>.css
 ├── api.js                 ← Git-based CMS client reading data/*.json
 └── main.js                ← Shared JS (stars, hamburger, card renders, modal)
 ```
