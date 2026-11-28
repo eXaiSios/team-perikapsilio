@@ -66,7 +66,12 @@
       "image": "",
       "bio": "Leads visual identity, graphic design, and creative direction for the team.",
       "order": 5,
-      "socials": []
+      "socials": [
+        {
+          "platform": "LinkedIn",
+          "url": "https://www.linkedin.com/in/dimitra-papadopoulou-62a2233a8/"
+        }
+      ]
     },
     {
       "name": "Ioanna Mpampathanasi",
