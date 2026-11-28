@@ -8,12 +8,12 @@
 }
 .filter-label {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.45rem;
+  font-size: 1.2rem;
   color: var(--text-dim);
 }
 .filter-btn {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.4rem;
+  font-size: 0.8rem;
   padding: 0.4rem 0.8rem;
   background: transparent;
   border: 1px solid var(--border);

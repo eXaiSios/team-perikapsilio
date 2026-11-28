@@ -59,7 +59,7 @@
     <!-- ACTIVE TOURNAMENTS -->
     <div id="active-section">
       <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--accent3)">⚡ ACTIVE NOW</h2>
+        <h2 class="section-title press" style="font-size:1.1;color:var(--accent3)">ACTIVE NOW</h2>
       </div>
       <div class="cards-grid" id="active-grid">
         <div class="card-loading press">LOADING...</div>
@@ -71,7 +71,7 @@
     <!-- UPCOMING TOURNAMENTS -->
     <div id="upcoming-section">
       <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--accent2)">◉ UPCOMING</h2>
+        <h2 class="section-title press" style="font-size:1.1;color:var(--accent2)">UPCOMING</h2>
       </div>
       <div class="cards-grid" id="upcoming-grid">
         <div class="card-loading press">LOADING...</div>
@@ -83,7 +83,7 @@
     <!-- COMPLETED TOURNAMENTS -->
     <div id="completed-section">
       <div class="section-header" style="text-align:left;margin-bottom:1.5rem">
-        <h2 class="section-title press" style="font-size:0.7rem;color:var(--text-dim)">✓ COMPLETED</h2>
+        <h2 class="section-title press" style="font-size:1.1;color:var(--text-dim)">COMPLETED</h2>
       </div>
       <div class="cards-grid" id="completed-grid">
         <div class="card-loading press">LOADING...</div>
@@ -184,9 +184,9 @@
           <h1 class="article-title">${PERI.escapeHtml(a.name)}</h1>
           <div class="article-meta vt">
             <span>🎮 ${PERI.escapeHtml(a.game || 'TBA')}</span>
-            <span>🏆 ${PERI.escapeHtml(a.prize || 'TBA')}</span>
-            <span>💻 ${PERI.escapeHtml(a.platform || 'PC')}</span>
-            <span>📅 ${PERI.formatDate(a.startDate)} – ${PERI.formatDate(a.endDate)}</span>
+            <span>Prize: ${PERI.escapeHtml(a.prize || 'TBA')}</span>
+            <span>Platfrom: ${PERI.escapeHtml(a.platform || 'PC')}</span>
+            <span>Date: ${PERI.formatDate(a.startDate)} – ${PERI.formatDate(a.endDate)}</span>
           </div>
         </div>
         <div class="article-body vt">
