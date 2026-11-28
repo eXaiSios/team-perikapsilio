@@ -1,0 +1,20 @@
+/* ── PAGINATION ── */
+.pagination {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 3rem;
+  flex-wrap: wrap;
+}
+.page-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.4rem;
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.page-btn:hover,
+.page-btn.active { border-color: var(--accent); color: var(--accent); }

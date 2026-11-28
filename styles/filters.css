@@ -1,0 +1,47 @@
+/* ── FILTER BAR ── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.filter-label {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.45rem;
+  color: var(--text-dim);
+}
+.filter-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.4rem;
+  padding: 0.4rem 0.8rem;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.filter-btn:hover,
+.filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.search-input {
+  font-family: 'VT323', monospace;
+  font-size: 1.2rem;
+  padding: 0.4rem 0.8rem;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  color: var(--text);
+  outline: none;
+  flex: 1;
+  min-width: 180px;
+}
+.search-input:focus { border-color: var(--accent); }
+.search-input::placeholder { color: var(--text-dim); }
+
+@media (max-width: 640px) {
+  .filter-bar { gap: 0.5rem; }
+  .filter-btn { padding: 0.55rem 0.8rem; font-size: 0.42rem; }
+  .search-input { flex: 1 1 100%; min-width: 0; width: 100%; }
+}

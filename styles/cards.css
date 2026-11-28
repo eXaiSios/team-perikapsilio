@@ -1,0 +1,109 @@
+/* ── CARDS GRID ── */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--grid-gap);
+}
+.card {
+  background: linear-gradient(180deg, var(--bg-card) 0%, #0d0d26 100%);
+  border: 2px solid var(--border);
+  padding: 1.6rem;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.65);
+  cursor: pointer;
+}
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--card-accent, var(--accent));
+}
+.card:hover {
+  border-color: var(--card-accent, var(--accent));
+  transform: translate(-2px, -4px);
+  background: var(--bg-card-h);
+  box-shadow: 6px 6px 0 var(--card-accent, var(--accent)), 0 0 24px rgba(0, 229, 255, 0.14);
+}
+.card-link {
+  display: inline-block;
+  margin-top: auto;
+  padding-top: 1.25rem;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.45rem;
+  color: var(--card-accent, var(--accent));
+  border-bottom: 1px solid;
+}
+.card-badge {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.45rem;
+  background: var(--card-accent, var(--accent));
+  color: #000;
+  padding: 3px 8px;
+  display: inline-block;
+  margin-bottom: 1rem;
+  letter-spacing: 0.1em;
+}
+.card-title {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.5rem, 1.3vw, 0.7rem);
+  color: var(--text-bright);
+  margin-bottom: 0.75rem;
+  line-height: 1.8;
+}
+.card-meta {
+  font-size: 1rem;
+  color: var(--text-dim);
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.card-meta .icon { font-size: 1rem; }
+.card-desc {
+  font-size: clamp(1.05rem, 1.5vw, 1.2rem);
+  color: var(--text);
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+/* card color variants */
+.card-event   { --card-accent: var(--accent); }
+.card-tourney { --card-accent: var(--accent2); }
+.card-news    { --card-accent: var(--accent3); }
+
+/* ── NEWS GRID ── */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: var(--grid-gap);
+}
+
+/* ── LOADING / EMPTY ── */
+.card-loading {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--accent);
+  font-size: 0.6rem;
+  padding: 3rem;
+  animation: blink 1s step-end infinite;
+}
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  border: 2px dashed var(--border);
+  color: var(--text-dim);
+}
+.empty-state .press { font-size: 0.55rem; color: var(--text-dim); display: block; margin-bottom: 0.5rem; }
+
+@media (max-width: 640px) {
+  .cards-grid,
+  .news-grid { grid-template-columns: 1fr; }
+}

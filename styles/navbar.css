@@ -1,0 +1,104 @@
+/* ── NAVBAR ── */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  background: rgba(10, 10, 26, 0.96);
+  border-bottom: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 2rem;
+  backdrop-filter: blur(8px);
+}
+.nav-logo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.55rem, 1.5vw, 0.9rem);
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+}
+.nav-logo-img {
+  height: 36px;
+  width: auto;
+  display: block;
+  object-fit: contain;
+  transition: transform 0.15s, filter 0.15s;
+}
+.nav-logo:hover .nav-logo-img {
+  transform: scale(1.04);
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45));
+}
+.pixel-bracket { color: var(--accent2); }
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.nav-link {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(0.4rem, 1vw, 0.55rem);
+  color: var(--text-dim);
+  padding: 0.4rem 0.6rem;
+  border: 1px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+.nav-link:hover,
+.nav-link.active {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+.hamburger span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--accent);
+  transition: transform 0.2s;
+}
+.hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.hamburger.open span:nth-child(2) { opacity: 0; }
+.hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+@media (max-width: 640px) {
+  .navbar { position: relative; padding: 0.75rem 1rem; }
+  .nav-logo-img { height: 30px; }
+  .hamburger { display: flex; padding: 8px; }
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: rgba(10,10,26,0.98);
+    border-bottom: 2px solid var(--accent);
+    flex-direction: column;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s;
+    z-index: 1001;
+  }
+  .nav-links.open { max-height: 500px; }
+  .nav-link {
+    display: block;
+    padding: 0.95rem 1.25rem;
+    border: none;
+    border-bottom: 1px solid var(--border);
+    font-size: 0.52rem;
+    width: 100%;
+  }
+}

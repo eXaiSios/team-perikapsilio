@@ -1,0 +1,60 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* ── CSS VARIABLES ── */
+:root {
+  --bg:           #0a0a1a;
+  --bg-alt:       #0d0d2b;
+  --bg-card:      #111130;
+  --bg-card-h:    #161650;
+  --accent:       #00e5ff;
+  --accent2:      #ff00aa;
+  --accent3:      #ffe600;
+  --text:         #c8d8ff;
+  --text-dim:     #7080b0;
+  --text-bright:  #ffffff;
+  --border:       #1e2060;
+  --border-h:     #00e5ff;
+  --pixel:        3px;
+  --grid-gap:     1.5rem;
+  --section-pad:  4rem 1.5rem;
+}
+
+/* ── RESET ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+::selection { background: var(--accent); color: #000; }
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border: 1px solid var(--accent); }
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'VT323', monospace;
+  font-size: 18px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  position: relative;
+}
+main { flex: 1; width: 100%; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { list-style: none; }
+
+/* ── FONTS ── */
+.press { font-family: 'Press Start 2P', monospace; }
+.vt    { font-family: 'VT323', monospace; }
+
+@media (max-width: 640px) {
+  :root {
+    --section-pad: 2.75rem 1rem;
+    --grid-gap: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

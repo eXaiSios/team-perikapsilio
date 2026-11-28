@@ -1,0 +1,65 @@
+/* ── ABOUT PAGE ── */
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+.about-text h3 {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  line-height: 1.8;
+}
+.about-text p {
+  font-size: 1.2rem;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.stat-box {
+  background: var(--bg-card);
+  border: 2px solid var(--border);
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.65);
+  transition: border-color 0.2s, transform 0.2s;
+}
+.stat-box:hover { border-color: var(--accent); transform: translate(-1px, -2px); }
+.stat-num {
+  font-family: 'Press Start 2P', monospace;
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  color: var(--accent);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+.stat-label {
+  font-size: 1rem;
+  color: var(--text-dim);
+}
+.values-list { display: flex; flex-direction: column; gap: 1rem; }
+.value-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1rem;
+  background: var(--bg-card);
+  border-left: 3px solid var(--accent2);
+}
+.value-icon { font-size: 1.5rem; }
+.value-text .press { font-size: 0.5rem; color: var(--accent2); display: block; margin-bottom: 0.3rem; }
+.value-text p { font-size: 1rem; color: var(--text); }
+
+@media (max-width: 900px) {
+  .about-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .stat-grid { grid-template-columns: 1fr; }
+}
