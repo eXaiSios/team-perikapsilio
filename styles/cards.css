@@ -5,7 +5,7 @@
   gap: var(--grid-gap);
 }
 .card {
-  background: linear-gradient(180deg, var(--bg-card) 0%, #0d0d26 100%);
+  background: #1111;
   border: 2px solid var(--border);
   padding: 1.6rem;
   position: relative;
@@ -28,7 +28,6 @@
   border-color: var(--card-accent, var(--accent));
   transform: translate(-2px, -4px);
   background: var(--bg-card-h);
-  box-shadow: 6px 6px 0 var(--card-accent, var(--accent)), 0 0 24px rgba(0, 229, 255, 0.14);
 }
 .card-link {
   display: inline-block;

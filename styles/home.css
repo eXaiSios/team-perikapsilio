@@ -9,35 +9,6 @@
   padding: 6.5rem 1.5rem 4rem;
   position: relative;
   overflow: hidden;
-  background:
-    radial-gradient(circle at 50% 42%, rgba(0, 229, 255, 0.12) 0%, rgba(255, 0, 170, 0.06) 38%, transparent 70%),
-    var(--bg);
-}
-.hero::before {
-  content: '';
-  position: absolute;
-  left: -10%;
-  right: -10%;
-  bottom: -25%;
-  height: 55%;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 38px, rgba(0,229,255,0.12) 38px, rgba(0,229,255,0.12) 40px),
-    repeating-linear-gradient(90deg, transparent, transparent 38px, rgba(255,0,170,0.09) 38px, rgba(255,0,170,0.09) 40px);
-  transform: perspective(420px) rotateX(62deg);
-  transform-origin: bottom center;
-  mask-image: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 90%);
-  -webkit-mask-image: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 90%);
-  pointer-events: none;
-  z-index: 0;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background:
-    repeating-linear-gradient(0deg, transparent, transparent 40px, rgba(0,229,255,0.015) 40px, rgba(0,229,255,0.015) 41px),
-    repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(0,229,255,0.015) 40px, rgba(0,229,255,0.015) 41px);
-  pointer-events: none;
 }
 .hero-inner { position: relative; z-index: 2; max-width: 820px; }
 .hero-badge {
@@ -52,34 +23,20 @@
   letter-spacing: 0.15em;
   box-shadow: 3px 3px 0 rgba(255, 230, 0, 0.25);
 }
-.hero-stars {
-  position: absolute;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-}
-.star {
-  position: absolute;
-  background: var(--text);
-  animation: twinkle var(--dur, 2s) infinite var(--delay, 0s);
-}
-@keyframes twinkle {
-  0%, 100% { opacity: 0.1; }
-  50% { opacity: 0.9; }
-}
 
 /* pixel logo decorative grid */
 .pixel-logo {
   margin: 0 auto 1.5rem;
-  width: 54px;
+  display: flex;
+  justify-content: center;
   animation: floatPixel 3.2s ease-in-out infinite;
 }
 @keyframes floatPixel {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
-.logo-block { display: grid; grid-template-columns: repeat(3,18px); gap: 0; }
-.lb { width: 18px; height: 18px; }
+.logo-block { display: grid; grid-template-columns: repeat(3,54px); gap: 0; }
+.lb { width: 54px; height: 54px; }
 .lb1,.lb3,.lb7,.lb9 { background: transparent; }
 .lb2,.lb4,.lb6,.lb8 { background: var(--accent2); }
 .lb5 { background: var(--accent); }
@@ -106,12 +63,6 @@
   margin-right: auto;
 }
 .hero-btns { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 2rem; }
-.blink-cursor {
-  font-family: 'Press Start 2P', monospace;
-  color: var(--accent);
-  animation: blink 1s step-end infinite;
-  font-size: 1rem;
-}
 
 #home-events,
 #home-tournaments,
@@ -174,4 +125,43 @@
   .hero { min-height: calc(100vh - 60px); padding: 2.5rem 1rem 3rem; }
   .hero-btns { flex-direction: column; align-items: stretch; }
   .hero-btns .btn { width: 100%; text-align: center; }
+}
+
+/* ── HOME FEED: three columns in one screen ── */
+.home-feed {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--grid-gap);
+  align-content: center;
+  width: 100%;
+  max-width: 1200px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 5rem 1.5rem 2rem;
+}
+.feed-col { display: flex; flex-direction: column; gap: 1rem; }
+.feed-col .section-title { text-align: center; margin: 0; font-size: 0.8rem; }
+.feed-col .btn { align-self: center; margin-top: auto; font-size: 0.5rem; }
+.home-feed #home-events,
+.home-feed #home-tournaments,
+.home-feed #home-news { flex-direction: column; flex-wrap: nowrap; justify-content: flex-start; gap: 1rem; }
+.home-feed #home-events .card,
+.home-feed #home-tournaments .card,
+.home-feed #home-news .card { flex: none; width: 100%; max-width: none; padding: 1rem; }
+.home-feed .card-title { margin-bottom: 0.4rem; }
+.home-feed .card-badge { margin-bottom: 0.5rem; }
+.home-feed .card-link { padding-top: 0.6rem; }
+.home-feed .card-desc {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin: 0.25rem 0 0;
+}
+/* newest two per column, one on short screens */
+.home-feed .card:nth-of-type(n+3) { display: none !important; }
+@media (min-width: 901px) and (max-height: 820px) {
+  .home-feed .card:nth-of-type(n+2) { display: none !important; }
+}
+@media (max-width: 900px) {
+  .home-feed { grid-template-columns: 1fr; min-height: 0; padding: 3rem 1rem; gap: 2.5rem; }
 }
