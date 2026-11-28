@@ -198,8 +198,8 @@ function renderEventCard(item) {
     <article class="card card-event" onclick="window.location='${SITE_BASE}events/?slug=${slug}'">
       <span class="card-badge">${escapeHtml(a.type || 'EVENT')}</span>
       <h3 class="card-title">${escapeHtml(a.title)}</h3>
-      <p class="card-meta"><span class="icon">📅</span> ${formatDate(a.date)}</p>
-      <p class="card-meta"><span class="icon">📍</span> ${escapeHtml(a.location || 'TBA')}</p>
+      <p class="card-meta"><span class="BoldTitle">Date:</span> ${formatDate(a.date)}</p>
+      <p class="card-meta"><span class="BoldTitle">Location:</span> ${escapeHtml(a.location || 'TBA')}</p>
       <p class="card-desc vt">${escapeHtml(a.description || '')}</p>
       <span class="card-link press">DETAILS →</span>
     </article>`;
@@ -214,9 +214,9 @@ function renderTournamentCard(item) {
     <article class="card card-tourney" onclick="window.location='${SITE_BASE}tournaments/?slug=${slug}'">
       <span class="card-badge" style="background:${statusColor}">${escapeHtml(status)}</span>
       <h3 class="card-title">${escapeHtml(a.name)}</h3>
-      <p class="card-meta"><span class="icon">🎮</span> ${escapeHtml(a.game || 'TBA')}</p>
-      <p class="card-meta"><span class="icon">🏆</span> ${escapeHtml(a.prize || 'TBA')}</p>
-      <p class="card-meta"><span class="icon">📅</span> ${formatDate(a.startDate)} – ${formatDate(a.endDate)}</p>
+      <p class="card-meta"><span class="BoldTitle">🎮</span> ${escapeHtml(a.game || 'TBA')}</p>
+      <p class="card-meta"><span class="BoldTitle">Prize:</span> ${escapeHtml(a.prize || 'TBA')}</p>
+      <p class="card-meta"><span class="BoldTitle">Date:</span> ${formatDate(a.startDate)} – ${formatDate(a.endDate)}</p>
       <span class="card-link press">VIEW →</span>
     </article>`;
 }
@@ -224,12 +224,12 @@ function renderTournamentCard(item) {
 function renderNewsCard(item) {
   const a = item.attributes;
   const slug = encodeURIComponent(a.slug || item.id);
-  const authorMeta = a.author ? `<p class="card-meta"><span class="icon">✍️</span> ${escapeHtml(a.author)}</p>` : '';
+  const authorMeta = a.author ? `<p class="card-meta"><span class="BoldTitle">Author</span> ${escapeHtml(a.author)}</p>` : '';
   return `
     <article class="card card-news" onclick="window.location='${SITE_BASE}news/?slug=${slug}'">
       <span class="card-badge">${escapeHtml(a.category || 'NEWS')}</span>
       <h3 class="card-title">${escapeHtml(a.title)}</h3>
-      <p class="card-meta"><span class="icon">📰</span> ${formatDate(a.publishedAt)}</p>
+      <p class="card-meta"><span class="BoldTitle"></span> ${formatDate(a.publishedAt)}</p>
       ${authorMeta}
       <p class="card-desc vt">${escapeHtml(a.summary || '')}</p>
       <span class="card-link press">READ →</span>

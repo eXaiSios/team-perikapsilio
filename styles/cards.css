@@ -63,7 +63,7 @@
   align-items: center;
   gap: 0.5rem;
 }
-.card-meta .icon { font-size: 1rem; }
+.card-meta .BoldTitle { font-size: 1.2rem; color: var(--text-bright) }
 .card-desc {
   font-size: clamp(1.05rem, 1.5vw, 1.2rem);
   color: var(--text);
